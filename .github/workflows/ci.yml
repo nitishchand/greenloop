@@ -77,6 +77,19 @@ jobs:
             fs.writeFileSync(path, JSON.stringify(config));
           '
 
+      # Hard gate: if a trivial claude -p can't run, the loop is pointless — and this
+      # separates auth/limit failures from loop failures (run 4 had silent exit-1 laps).
+      - name: Claude headless smoke test
+        working-directory: demo/miniclinic
+        run: |
+          claude --version
+          set +e
+          OUT=$(claude -p "Reply with exactly: OK" --max-turns 2 2>&1)
+          CODE=$?
+          set -e
+          echo "exit=$CODE output=$OUT"
+          [ "$CODE" -eq 0 ] || exit 1
+
       - name: MiniClinic — install deps and start backend + Metro
         working-directory: demo/miniclinic
         run: |
@@ -97,3 +110,21 @@ jobs:
       - name: Wake-up ritual — fresh verify is the only trusted evidence
         working-directory: demo/miniclinic
         run: node ../../bin/greenloop-verify.js s01-patient-list
+
+      - name: Collect evidence (verifier logs, task state, lap diff)
+        if: always()
+        working-directory: demo/miniclinic
+        run: |
+          mkdir -p /tmp/evidence
+          cp -R .greenloop /tmp/evidence/ 2>/dev/null || true
+          cp progress.json /tmp/evidence/ 2>/dev/null || true
+          git diff > /tmp/evidence/lap-changes.diff || true
+          git status --short > /tmp/evidence/git-status.txt || true
+
+      - name: Upload evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dogfood-evidence
+          path: /tmp/evidence/
+          if-no-files-found: ignore
