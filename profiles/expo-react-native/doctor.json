@@ -1,0 +1,37 @@
+[
+  {
+    "name": "node",
+    "run": "node -e \"process.exit(Number(process.versions.node.split('.')[0]) >= 20 ? 0 : 1)\"",
+    "fixHint": "Install Node >= 20 (https://nodejs.org or `brew install node`)"
+  },
+  {
+    "name": "docker",
+    "run": "docker info",
+    "fixHint": "Start Docker Desktop (or install it: https://docker.com/products/docker-desktop)"
+  },
+  {
+    "name": "simctl",
+    "run": "xcrun simctl help",
+    "fixHint": "Install Xcode from the App Store, then: xcode-select --install and open Xcode once to accept the license"
+  },
+  {
+    "name": "simulator-booted",
+    "run": "xcrun simctl list devices | grep -q Booted",
+    "fixHint": "Boot a simulator: open -a Simulator, or `xcrun simctl boot \"iPhone 16\"`"
+  },
+  {
+    "name": "maestro",
+    "run": "maestro -v",
+    "fixHint": "Install Maestro: curl -fsSL https://get.maestro.mobile.dev | bash (then restart the shell)"
+  },
+  {
+    "name": "metro-up",
+    "run": "curl -sf http://localhost:8081/status",
+    "fixHint": "Start the dev server: npm start -w apps/mobile (only needed during build phases)"
+  },
+  {
+    "name": "accessibility-reminder",
+    "run": "true",
+    "fixHint": "Reminder (not auto-checkable): grant your terminal/IDE macOS Accessibility permission in System Settings > Privacy & Security > Accessibility, or simulator automation will silently fail"
+  }
+]

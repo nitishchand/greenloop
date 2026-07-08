@@ -117,6 +117,29 @@ claude plugin install bnb@breathe-and-build
   with required testIDs), `state.md`, `debug.md`, `progress.json`, `spiritual-guide.md`,
   `remaining-tasks.md`, `CLAUDE.md`.
 
+## Stack profiles
+
+Swapping stacks swaps more than the E2E command, so the unit of extension is a **profile**
+(`profiles/<name>/`), not a verifier adapter:
+
+| File | Consumed by |
+|---|---|
+| `verifier.json` | `bnb-verify` — layer commands + e2e adapter |
+| `doctor.json` | `bnb-doctor` — required tools + env checks |
+| `toolbelt.md` | the build-loop skills — launch, logs, screenshots, view tree |
+| `conventions.md` | the build-loop skills — testID naming, flow locations, idioms |
+| `templates/` | `/bnb:scaffold` — the project scaffold |
+
+A project binds a profile in `bnb.config.json` (`"profile": "expo-react-native"`).
+`loadConfig` merges the profile's `verifier`/`doctor` defaults under the project's config;
+**a key present in the project config replaces the profile's key wholesale** (no deep
+merging), and an unknown profile name is a hard error — no silent degradation.
+
+v1 ships `profiles/expo-react-native` (macOS + iOS Simulator): Expo + expo-router +
+WatermelonDB + Zustand + TanStack Query / Express + Prisma + PostgreSQL + Redis /
+npm-workspaces monorepo / Maestro E2E. Template dependency versions get exercised and
+pinned by the MiniClinic demo + CI (Plan 4).
+
 ## Development
 
 Node >= 20, ESM, zero runtime dependencies. Tests use the built-in runner:

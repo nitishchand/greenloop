@@ -16,8 +16,8 @@ if (!taskId) {
 let config;
 try {
   config = loadConfig(cwd);
-} catch {
-  console.error('bnb-loop: no bnb.config.json in this directory');
+} catch (err) {
+  console.error(`bnb-loop: ${err.code === 'ENOENT' ? 'no bnb.config.json in this directory' : err.message}`);
   process.exit(9);
 }
 const loopCfg = config.loop ?? {};

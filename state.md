@@ -26,8 +26,13 @@ ClinicBuddy build methodology. Design spec: `docs/specs/2026-07-08-breathe-and-b
   `claude plugin validate` clean. Resolved spec §15 Q1 (packaging) + Q3 (spiritual-guide
   prompts). NOTE: skill/command frontmatter descriptions with a colon must be quoted
   (YAML) — guarded by test.
-- 🔲 **Plan 3 — expo-react-native profile**: scaffold templates (Expo+Express+Prisma monorepo,
-  docker-compose), verifier/doctor config, toolbelt + conventions docs. Spec §7.
+- ✅ **Plan 3 — expo-react-native profile** (`docs/plans/2026-07-08-03-expo-react-native-profile.md`,
+  merged to main 2026-07-08): `profiles/expo-react-native/` — verifier.json (tsc→jest→maestro
+  + backend/simulator/metro preflights), doctor.json (7 checks incl. accessibility reminder),
+  toolbelt.md, conventions.md, scaffold templates (Expo+Express+Prisma npm-workspaces monorepo,
+  docker-compose ×3 `unless-stopped`, curated allowlist settings.json). `loadConfig` now merges
+  profile verifier/doctor under project overrides (project key wins WHOLESALE; unknown profile
+  throws). Template dep versions unverified until MiniClinic runs (Plan 4).
 - 🔲 **Plan 4 — Installer + MiniClinic demo + CI dogfood + playbook docs.** Spec §3, §10–§12.
 
 ## Conventions

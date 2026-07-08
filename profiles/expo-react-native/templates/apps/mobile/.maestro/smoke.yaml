@@ -1,0 +1,10 @@
+# Scaffold smoke flow: proves the app launches and renders. First real feature flows
+# copy this shape (clearState launch, extendedWaitUntil — never sleeps).
+appId: com.example.{{PROJECT_NAME}}
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "home-screen"
+    timeout: 10000
