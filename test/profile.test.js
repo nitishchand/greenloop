@@ -22,6 +22,20 @@ test('verifier.json has the four layers with the spec step names', () => {
   }
 });
 
+test('toolbelt.md covers screen, view tree, logs, and the log-watcher pattern', () => {
+  const toolbelt = read(`${PROFILE}/toolbelt.md`);
+  for (const marker of ['screenshot', 'maestro hierarchy', 'collect_app_logs', 'subagent']) {
+    assert.ok(toolbelt.includes(marker), `toolbelt must mention ${marker}`);
+  }
+});
+
+test('conventions.md pins testID naming, flow location, and wait discipline', () => {
+  const conventions = read(`${PROFILE}/conventions.md`);
+  for (const marker of ['testID', '.maestro/', 'clearState', 'extendedWaitUntil']) {
+    assert.ok(conventions.includes(marker), `conventions must mention ${marker}`);
+  }
+});
+
 test('doctor.json covers the spec §4 environment checks with fix hints', () => {
   const doctor = json(`${PROFILE}/doctor.json`);
   const names = doctor.map((c) => c.name);
