@@ -5,9 +5,21 @@ an idea to a working, E2E-verified app through human-gated planning phases ("bre
 machine-gated build loop ("build"). Every feature must survive a committed, tamper-evident
 verifier — typecheck + unit + real E2E on a simulator — before the agent is allowed to stop.
 
-> **Status: early development.** The core engine (this package's CLIs) and the Claude Code
-> plugin are implemented; the `expo-react-native` stack profile and the guided installer are
-> in progress. Design spec: [`docs/specs/2026-07-08-breathe-and-build-design.md`](docs/specs/2026-07-08-breathe-and-build-design.md).
+> **Status: v1 feature-complete, pre-release.** Core engine, Claude Code plugin, the
+> `expo-react-native` profile, guided installer, and the MiniClinic demo are implemented;
+> not yet published to npm, and the full dogfood loop awaits its first provisioned CI run.
+> Design spec: [`docs/specs/2026-07-08-breathe-and-build-design.md`](docs/specs/2026-07-08-breathe-and-build-design.md).
+
+## Install
+
+```bash
+npx breathe-and-build          # guided: preflight loop, plugin + Expo MCP registration
+npx breathe-and-build --check  # report-only preflight (exit 0 ready / 3 not ready)
+npx breathe-and-build --yes    # auto-confirm the safe installs (Maestro)
+```
+
+The installer never half-installs: it auto-installs only Maestro, prints exact instructions
+for everything else (Xcode, Docker Desktop), and re-checks in a loop until green.
 
 ## CLIs
 
@@ -139,6 +151,14 @@ v1 ships `profiles/expo-react-native` (macOS + iOS Simulator): Expo + expo-route
 WatermelonDB + Zustand + TanStack Query / Express + Prisma + PostgreSQL + Redis /
 npm-workspaces monorepo / Maestro E2E. Template dependency versions get exercised and
 pinned by the MiniClinic demo + CI (Plan 4).
+
+## Docs
+
+- [docs/tutorial.md](docs/tutorial.md) — idea → verified app, mirroring `demo/miniclinic`
+- [docs/playbook.md](docs/playbook.md) — token economy: ccusage, model strategy, cache cadence
+- [docs/os-matrix.md](docs/os-matrix.md) — OS support and the `maestro-android` roadmap
+- [docs/writing-profiles.md](docs/writing-profiles.md) — authoring a stack profile
+- [docs/container-mode.md](docs/container-mode.md) — optional Docker bypass mode and its caveats
 
 ## Development
 
