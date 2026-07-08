@@ -1,0 +1,25 @@
+{
+  "tasks": [
+    {
+      "id": "s01-patient-list",
+      "spec": "Patient list + add patient per PRD S-01/S-02: list renders from GET /patients, add form POSTs and returns to an updated list",
+      "acceptance": [
+        "patient list screen renders",
+        "user can add a patient and see it in the list"
+      ],
+      "testIDs": [
+        "patient-list-screen",
+        "patient-empty",
+        "patient-add-button",
+        "add-patient-screen",
+        "patient-name-input",
+        "patient-save-button"
+      ],
+      "flow": "apps/mobile/.maestro/s01-patient-list.yaml",
+      "active": false,
+      "passes": false,
+      "abandoned": false,
+      "reflexions": []
+    }
+  ]
+}

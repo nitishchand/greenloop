@@ -1,0 +1,6 @@
+node_modules/
+.bnb/
+.env
+.expo/
+dist/
+*.log
