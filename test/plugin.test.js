@@ -64,6 +64,16 @@ test('bnb-architecture skill: default profile + warn on override', () => {
   assertSkill('bnb-architecture', [/expo-react-native/, /warn/i, /red.flags/i, /offline/i]);
 });
 
+test('bnb-feature skill: green loop with anti-reward-hacking rules', () => {
+  assertSkill('bnb-feature', [
+    /bnb-verify/, /reward hacking/i, /commit the flow/i, /subagent/i, /red.flags/i, /never edit .?passes/i,
+  ]);
+});
+
+test('bnb-debugging skill: evidence-first with debug.md citation', () => {
+  assertSkill('bnb-debugging', [/debug\.md/, /see Bug/i, /subagent/i, /red.flags/i, /evidence/i]);
+});
+
 const TEMPLATES = [
   'prd.md', 'state.md', 'debug.md', 'progress.json',
   'spiritual-guide.md', 'remaining-tasks.md', 'CLAUDE.md',
