@@ -1,6 +1,6 @@
 ---
 name: bnb-feature
-description: The green loop for one task — Plan, Implement, Author E2E, Verify with bnb-verify, Self-correct via subagent investigation, Checkpoint. Machine-gated: done means exit 0, with anti-reward-hacking rules enforced structurally.
+description: "The green loop for one task — Plan, Implement, Author E2E, Verify with bnb-verify, Self-correct via subagent investigation, Checkpoint. Machine-gated: done means exit 0, with anti-reward-hacking rules enforced structurally."
 ---
 
 # bnb-feature — the green loop

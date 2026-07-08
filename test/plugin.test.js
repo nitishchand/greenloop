@@ -22,6 +22,25 @@ function frontmatter(body) {
   return match[1];
 }
 
+// An unquoted YAML value containing ': ' fails to parse and Claude Code silently drops ALL
+// frontmatter fields (caught for real by `claude plugin validate`). Guard against regression.
+function assertYamlSafe(fm, file) {
+  for (const line of fm.split('\n')) {
+    const value = line.replace(/^[\w-]+:\s*/, '');
+    if (value.startsWith('"') || value.startsWith("'")) continue;
+    assert.ok(!/:\s/.test(value), `${file}: unquoted frontmatter value contains a colon — quote it: ${line}`);
+  }
+}
+
+test('every command and skill frontmatter is YAML-safe', () => {
+  for (const c of COMMANDS) {
+    assertYamlSafe(frontmatter(read(`plugin/commands/${c}.md`)), `${c}.md`);
+  }
+  for (const s of readdirSync(`${root}plugin/skills`)) {
+    assertYamlSafe(frontmatter(read(`plugin/skills/${s}/SKILL.md`)), s);
+  }
+});
+
 test('exactly the 8 phase commands exist', () => {
   const files = readdirSync(`${root}plugin/commands`).sort();
   assert.deepEqual(files, COMMANDS.map((c) => `${c}.md`).sort());

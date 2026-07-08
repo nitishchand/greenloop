@@ -1,5 +1,5 @@
 ---
-description: Phase 4 — birth the project from the bound profile: monorepo, Docker services, verifier, hooks, artifacts.
+description: "Phase 4 — birth the project from the bound profile: monorepo, Docker services, verifier, hooks, artifacts."
 ---
 
 You are in the **scaffold** phase.

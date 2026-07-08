@@ -1,6 +1,7 @@
 {
   "name": "breathe-and-build",
   "owner": { "name": "Nitish Chand" },
+  "description": "Breathe-and-Build: spec-to-verified-app system for Claude Code — human-gated planning phases plus a machine-gated, E2E-verified build loop.",
   "plugins": [
     {
       "name": "bnb",

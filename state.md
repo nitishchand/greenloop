@@ -17,11 +17,15 @@ ClinicBuddy build methodology. Design spec: `docs/specs/2026-07-08-breathe-and-b
   (fix-it list, exit 0/3), `bnb-loop` (headless laps via `claude -p`), `bnb-stop-hook`
   (blocks stop while active task red; escape = `abandoned:true`).
   Contracts documented in README.md — Plans 2–4 build on them; do not change without care.
-- 🔲 **Plan 2 — Plugin**: `.claude-plugin` manifest, `commands/bnb/*` (status router + idea/prd/
-  architecture/scaffold/feature/overnight/doctor), self-contained skills (bnb-prd gap-hunting
-  loop, bnb-architecture, bnb-feature green loop, bnb-debugging, bnb-overnight), artifact
-  templates (prd.md screen-spec format, state.md, debug.md, spiritual-guide.md, CLAUDE.md).
-  Plan not yet written — use writing-plans against spec §4–§6.
+- ✅ **Plan 2 — Plugin** (`docs/plans/2026-07-08-02-plugin.md`, merged to main 2026-07-08):
+  plugin name `bnb` (`plugin/.claude-plugin/plugin.json`), repo-root marketplace
+  (`.claude-plugin/marketplace.json`, install: `claude plugin install bnb@breathe-and-build`),
+  8 flat commands in `plugin/commands/` (`/bnb` router + idea/prd/architecture/scaffold/
+  feature/overnight/doctor), 5 skills, 7 artifact templates, self-contained Stop hook
+  (`plugin/hooks/verify-before-stop.js`, parity-tested vs `bnb-stop-hook`). 54 tests green;
+  `claude plugin validate` clean. Resolved spec §15 Q1 (packaging) + Q3 (spiritual-guide
+  prompts). NOTE: skill/command frontmatter descriptions with a colon must be quoted
+  (YAML) — guarded by test.
 - 🔲 **Plan 3 — expo-react-native profile**: scaffold templates (Expo+Express+Prisma monorepo,
   docker-compose), verifier/doctor config, toolbelt + conventions docs. Spec §7.
 - 🔲 **Plan 4 — Installer + MiniClinic demo + CI dogfood + playbook docs.** Spec §3, §10–§12.
