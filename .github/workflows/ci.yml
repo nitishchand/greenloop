@@ -1,0 +1,80 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # The always-on gate: the package's own tests (engines, plugin structure, profile,
+  # installer, demo no-drift) on both supported dev platforms.
+  unit:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node: [20, 22]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm test
+
+  # The §12 dogfood: scaffold MiniClinic, run one headless feature lap, assert the
+  # verifier goes green. Dispatch-only and honest about its requirements — it needs a
+  # macOS runner with the mobile toolchain (Xcode + booted simulator + Maestro) and an
+  # ANTHROPIC_API_KEY secret for the `claude -p` laps. Docker is not available on GitHub
+  # macOS runners, so the backend runs directly via tsx (the profile's docker-compose
+  # path is for local dev). Promote to a scheduled gate once a provisioned runner exists.
+  dogfood:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Demo no-drift check (scaffold engine reproduces the committed base)
+        run: npm test -- --test-name-pattern "committed demo matches"
+
+      - name: Installer preflight (informational — reports what the runner lacks)
+        run: node installer/index.js --check
+        continue-on-error: true
+
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Boot iOS simulator
+        run: |
+          UDID=$(xcrun simctl list devices available -j | node -e "const d=JSON.parse(require('fs').readFileSync(0));console.log(Object.values(d.devices).flat().find(x=>/iPhone/.test(x.name)).udid)")
+          xcrun simctl boot "$UDID"
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: MiniClinic — install deps and start backend + Metro
+        working-directory: demo/miniclinic
+        run: |
+          npm install
+          npm run dev -w apps/backend &
+          npm start -w apps/mobile &
+          sleep 20
+          curl -sf http://localhost:3001/health
+
+      - name: Arm the task and run the headless green loop
+        working-directory: demo/miniclinic
+        run: |
+          node -e "const f='progress.json',p=JSON.parse(require('fs').readFileSync(f));p.tasks[0].active=true;require('fs').writeFileSync(f,JSON.stringify(p,null,2)+'\n')"
+          timeout 30m node ../../bin/bnb-loop.js s01-patient-list 10
+
+      - name: Wake-up ritual — fresh verify is the only trusted evidence
+        working-directory: demo/miniclinic
+        run: node ../../bin/bnb-verify.js s01-patient-list
