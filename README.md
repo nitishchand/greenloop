@@ -5,9 +5,9 @@ an idea to a working, E2E-verified app through human-gated planning phases ("bre
 machine-gated build loop ("build"). Every feature must survive a committed, tamper-evident
 verifier — typecheck + unit + real E2E on a simulator — before the agent is allowed to stop.
 
-> **Status: early development.** The core engine (this package's CLIs) is implemented; the
-> Claude Code plugin, the `expo-react-native` stack profile, and the guided installer are in
-> progress. Design spec: [`docs/specs/2026-07-08-breathe-and-build-design.md`](docs/specs/2026-07-08-breathe-and-build-design.md).
+> **Status: early development.** The core engine (this package's CLIs) and the Claude Code
+> plugin are implemented; the `expo-react-native` stack profile and the guided installer are
+> in progress. Design spec: [`docs/specs/2026-07-08-breathe-and-build-design.md`](docs/specs/2026-07-08-breathe-and-build-design.md).
 
 ## CLIs
 
@@ -82,6 +82,40 @@ Rules the whole system depends on:
   Claude Code session from stopping.
 - Weakening the verifier config or an E2E flow to force a pass is reward hacking; both are
   committed, so tampering shows in the diff.
+
+## The plugin
+
+The Claude Code plugin lives in [`plugin/`](plugin/) (plugin name: `bnb`). Until the guided
+installer (Plan 4) lands, install it from this repo:
+
+```bash
+claude plugin marketplace add /path/to/breathe-and-build   # or the GitHub repo once public
+claude plugin install bnb@breathe-and-build
+```
+
+### Commands
+
+| Command | Phase | Gate |
+|---|---|---|
+| `/bnb` | Status router — "You are in \<phase\>. Next: …" | — |
+| `/bnb:idea` | Free-form conversation → drafts `prd.md` v0 | User confirms direction |
+| `/bnb:prd` | Gap-hunting iteration loop on the PRD | Zero gaps **and** user declares final |
+| `/bnb:architecture` | Schema / API / offline-sync review + stack confirmation | User approves |
+| `/bnb:scaffold` | Births the project from the bound profile + artifacts | User reviews scaffold, fills `spiritual-guide.md` |
+| `/bnb:feature <id>` | The green loop | Machine: `bnb-verify` exit 0, then review + commit |
+| `/bnb:overnight <ids>` | Unattended `bnb-loop` runs | Wake-up ritual: diff review + fresh `bnb-verify` |
+| `/bnb:doctor` | Environment fix-it list via `bnb-doctor` | — |
+
+### Skills, hook, templates
+
+- **Skills** (self-contained, no external plugin dependencies): `bnb-prd`,
+  `bnb-architecture`, `bnb-feature`, `bnb-debugging`, `bnb-overnight`.
+- **Stop hook**: `plugin/hooks/verify-before-stop.js` blocks the session from stopping while
+  an active task is red. It is a self-contained copy of `bnb-stop-hook` (a marketplace
+  install only ships `plugin/`), kept identical by a parity test.
+- **Templates** (`plugin/templates/`): the §5 artifact set — `prd.md` (S-NN screen specs
+  with required testIDs), `state.md`, `debug.md`, `progress.json`, `spiritual-guide.md`,
+  `remaining-tasks.md`, `CLAUDE.md`.
 
 ## Development
 

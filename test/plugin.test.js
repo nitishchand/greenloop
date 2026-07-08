@@ -74,6 +74,19 @@ test('bnb-debugging skill: evidence-first with debug.md citation', () => {
   assertSkill('bnb-debugging', [/debug\.md/, /see Bug/i, /subagent/i, /red.flags/i, /evidence/i]);
 });
 
+test('bnb-overnight skill: spiritual-guide fallback + wake-up ritual', () => {
+  assertSkill('bnb-overnight', [/spiritual-guide\.md/, /bnb-loop/, /wake-up ritual/i, /red.flags/i]);
+});
+
+test('exactly the 5 self-contained skills ship in the plugin', () => {
+  const skills = readdirSync(`${root}plugin/skills`).sort();
+  assert.deepEqual(skills, ['bnb-architecture', 'bnb-debugging', 'bnb-feature', 'bnb-overnight', 'bnb-prd']);
+});
+
+test('README documents the plugin install', () => {
+  assert.match(read('README.md'), /bnb@breathe-and-build/);
+});
+
 const TEMPLATES = [
   'prd.md', 'state.md', 'debug.md', 'progress.json',
   'spiritual-guide.md', 'remaining-tasks.md', 'CLAUDE.md',
