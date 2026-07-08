@@ -46,6 +46,24 @@ test('skill-routed commands name their skill', () => {
   }
 });
 
+function assertSkill(name, markers) {
+  const body = read(`plugin/skills/${name}/SKILL.md`);
+  const fm = frontmatter(body);
+  assert.match(fm, new RegExp(`name:\\s*${name}\\s*$`, 'm'), `${name} frontmatter name`);
+  assert.match(fm, /description:\s*\S+/, `${name} description`);
+  for (const marker of markers) {
+    assert.match(body, marker, `${name} must contain ${marker}`);
+  }
+}
+
+test('bnb-prd skill: gap-hunting loop discipline', () => {
+  assertSkill('bnb-prd', [/gaps found:/, /red.flags/i, /one at a time/i, /testIDs/]);
+});
+
+test('bnb-architecture skill: default profile + warn on override', () => {
+  assertSkill('bnb-architecture', [/expo-react-native/, /warn/i, /red.flags/i, /offline/i]);
+});
+
 const TEMPLATES = [
   'prd.md', 'state.md', 'debug.md', 'progress.json',
   'spiritual-guide.md', 'remaining-tasks.md', 'CLAUDE.md',
