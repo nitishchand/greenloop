@@ -73,8 +73,8 @@ jobs:
         working-directory: demo/miniclinic
         run: |
           node -e "const f='progress.json',p=JSON.parse(require('fs').readFileSync(f));p.tasks[0].active=true;require('fs').writeFileSync(f,JSON.stringify(p,null,2)+'\n')"
-          timeout 30m node ../../bin/bnb-loop.js s01-patient-list 10
+          timeout 30m node ../../bin/greenloop-loop.js s01-patient-list 10
 
       - name: Wake-up ritual — fresh verify is the only trusted evidence
         working-directory: demo/miniclinic
-        run: node ../../bin/bnb-verify.js s01-patient-list
+        run: node ../../bin/greenloop-verify.js s01-patient-list

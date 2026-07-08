@@ -38,7 +38,7 @@ test('a throwing lap does not abort the loop', () => {
 test('bossPrompt names the task, forbids tampering, requires spiritual-guide fallback', () => {
   const p = bossPrompt('s01-login');
   assert.match(p, /s01-login/);
-  assert.match(p, /bnb-verify s01-login/);
+  assert.match(p, /greenloop-verify s01-login/);
   assert.match(p, /reward hacking/i);
   assert.match(p, /spiritual-guide\.md/);
 });

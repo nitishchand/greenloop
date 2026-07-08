@@ -8,7 +8,7 @@ import {
 } from '../src/core/progress.js';
 
 function fixture(tasks) {
-  const dir = mkdtempSync(join(tmpdir(), 'bnb-'));
+  const dir = mkdtempSync(join(tmpdir(), 'greenloop-'));
   const path = join(dir, 'progress.json');
   writeFileSync(path, JSON.stringify({ tasks }));
   return path;

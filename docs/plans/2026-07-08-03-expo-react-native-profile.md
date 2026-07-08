@@ -1,3 +1,4 @@
+> **Historical document:** written under the project's original name (breathe-and-build / bnb), renamed to **GreenLoop / greenloop** on 2026-07-09. Names below are as they were at implementation time; the code has been renamed.
 # BnB expo-react-native Profile Implementation Plan (Plan 3 of 4)
 
 > **For agentic workers:** Steps use checkbox (`- [ ]`) syntax for tracking. Implement task-by-task, TDD where there is testable structure; commit per task.
@@ -127,3 +128,4 @@ Tests (extend `test/profile.test.js`): every listed file exists; all JSON files 
 - **Spec coverage:** §7 profile anatomy → Tasks 1, 3, 4; §7 v1 stack list → Task 4 deps; §4 doctor checks → Task 1 (scriptable subset + accessibility reminder); §9 allowlist → Task 4 settings.json; §10 log-watcher pattern → Task 3 toolbelt; Plan 1's deferred profile merging → Task 2. Flutter profile stays roadmap-only (§7); demo/CI that executes templates is Plan 4 by design.
 - **Contract safety:** merge is additive — configs without `profile` bypass it entirely; README documents the wholesale-override rule; unknown profile throws per the no-silent-degradation rule.
 - **Honest limits:** template dependency versions are unverified until Plan 4's MiniClinic run; recorded in Global Constraints and as comments in the templates.
+

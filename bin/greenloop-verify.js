@@ -10,7 +10,7 @@ let config;
 try {
   config = loadConfig(cwd);
 } catch (err) {
-  console.error(`bnb-verify: ${err.code === 'ENOENT' ? 'no bnb.config.json in this directory' : err.message}`);
+  console.error(`greenloop-verify: ${err.code === 'ENOENT' ? 'no greenloop.config.json in this directory' : err.message}`);
   process.exit(EXIT.USAGE);
 }
 

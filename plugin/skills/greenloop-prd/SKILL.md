@@ -1,9 +1,9 @@
 ---
-name: bnb-prd
+name: greenloop-prd
 description: The PRD gap-hunting iteration loop — read the whole PRD, hunt gaps in the stitched user journey, ask one question at a time, end each pass with a gap count. Exits only at zero gaps AND user-declared final.
 ---
 
-# bnb-prd — the gap-hunting loop
+# greenloop-prd — the gap-hunting loop
 
 ## Hard rules
 

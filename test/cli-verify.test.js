@@ -5,11 +5,11 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
-const CLI = new URL('../bin/bnb-verify.js', import.meta.url).pathname;
+const CLI = new URL('../bin/greenloop-verify.js', import.meta.url).pathname;
 
 function project({ unitExit = 0 } = {}) {
-  const cwd = mkdtempSync(join(tmpdir(), 'bnb-cli-'));
-  writeFileSync(join(cwd, 'bnb.config.json'), JSON.stringify({
+  const cwd = mkdtempSync(join(tmpdir(), 'greenloop-cli-'));
+  writeFileSync(join(cwd, 'greenloop.config.json'), JSON.stringify({
     verifier: {
       typecheck: [{ name: 'tc', run: 'node -e "process.exit(0)"' }],
       unit: [{ name: 'unit', run: `node -e "console.error('unit says no'); process.exit(${unitExit})"` }],

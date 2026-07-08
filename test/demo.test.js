@@ -21,7 +21,7 @@ const REPLACED = new Set([
 ]);
 
 test('committed demo matches a fresh scaffold except the feature files', () => {
-  const fresh = mkdtempSync(join(tmpdir(), 'bnb-demo-'));
+  const fresh = mkdtempSync(join(tmpdir(), 'greenloop-demo-'));
   const written = scaffoldMiniclinic(fresh, { log: quiet });
   assert.ok(written.length >= 20);
   for (const file of written) {

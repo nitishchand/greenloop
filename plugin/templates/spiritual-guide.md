@@ -1,7 +1,7 @@
 # {{PROJECT_NAME}} — Spiritual Guide
 
 > **You (the human) fill this in at scaffold time.** During unattended runs
-> (`/bnb:overnight`), the agent is forbidden from waiting on you — this file is its
+> (`/greenloop:overnight`), the agent is forbidden from waiting on you — this file is its
 > answer-of-last-resort oracle. Every ambiguous product decision gets resolved against what
 > you write here, and the decision is recorded as a Reflexion. Vague answers here become
 > vague decisions at 3am; be concrete.

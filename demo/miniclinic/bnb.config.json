@@ -1,9 +1,0 @@
-{
-  "profile": "expo-react-native",
-  "resultsDir": ".bnb/results",
-  "tailLines": 40,
-  "loop": {
-    "allowedTools": "Read,Edit,Write,Grep,Glob,Bash(bnb-verify:*),Bash(bnb-doctor:*),Bash(npm test:*),Bash(npm run typecheck:*),Bash(maestro test:*),Bash(maestro hierarchy:*),Bash(xcrun simctl:*),Bash(docker compose logs:*)",
-    "maxTurns": 40
-  }
-}

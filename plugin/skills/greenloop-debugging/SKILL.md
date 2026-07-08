@@ -1,9 +1,9 @@
 ---
-name: bnb-debugging
+name: greenloop-debugging
 description: Systematic debugging tuned to the green loop — evidence before hypothesis, investigation delegated to subagents with capped summaries, debug.md read first and cited ("see Bug 8"), every root-cause fix appended to the ledger.
 ---
 
-# bnb-debugging — evidence before hypothesis
+# greenloop-debugging — evidence before hypothesis
 
 ## Hard rules
 
@@ -21,11 +21,11 @@ description: Systematic debugging tuned to the green loop — evidence before hy
 
 ## Process
 
-1. Reproduce or capture the failure (failing tail from `bnb-verify`, toolbelt logs,
+1. Reproduce or capture the failure (failing tail from `greenloop-verify`, toolbelt logs,
    screenshot). One concrete artifact minimum.
 2. Check `debug.md` for a matching symptom; apply and verify the cited lesson if found.
 3. Otherwise spawn the investigation subagent (rule 3) — one hypothesis at a time.
-4. Apply the suggested fix yourself; re-run `bnb-verify` (or the narrowest failing layer)
+4. Apply the suggested fix yourself; re-run `greenloop-verify` (or the narrowest failing layer)
    to confirm the evidence chain: symptom gone for the stated reason, not coincidentally.
 5. Record: Reflexion entry now; `debug.md` entry at root cause.
 

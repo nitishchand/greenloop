@@ -6,7 +6,7 @@
 
 The smallest possible clinic front-desk tool: a receptionist keeps a running list of
 patients who checked in today. One list, one add form, one API. MiniClinic exists to
-dogfood Breathe-and-Build end to end — every concept (screen specs, testIDs, green loop)
+dogfood GreenLoop end to end — every concept (screen specs, testIDs, green loop)
 appears exactly once.
 
 ## Users & roles

@@ -7,7 +7,7 @@ const PROFILES_DIR = fileURLToPath(new URL('../../profiles', import.meta.url));
 // Merge rule: a key present in the project config replaces the profile's key wholesale
 // (no deep/array merging). Unknown profile names throw — no silent degradation.
 export function loadConfig(cwd, { profilesDir = PROFILES_DIR } = {}) {
-  const config = JSON.parse(readFileSync(join(cwd, 'bnb.config.json'), 'utf8'));
+  const config = JSON.parse(readFileSync(join(cwd, 'greenloop.config.json'), 'utf8'));
   if (!config.profile) return config;
 
   const dir = join(profilesDir, config.profile);

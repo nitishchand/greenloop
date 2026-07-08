@@ -7,8 +7,8 @@ import { spawnSync } from 'node:child_process';
 import { loadConfig } from '../src/core/config.js';
 
 function project(config) {
-  const cwd = mkdtempSync(join(tmpdir(), 'bnb-cfg-'));
-  writeFileSync(join(cwd, 'bnb.config.json'), JSON.stringify(config));
+  const cwd = mkdtempSync(join(tmpdir(), 'greenloop-cfg-'));
+  writeFileSync(join(cwd, 'greenloop.config.json'), JSON.stringify(config));
   return cwd;
 }
 
@@ -46,20 +46,20 @@ test('unknown profile throws', () => {
   assert.throws(() => loadConfig(cwd), /unknown profile 'ghost'/);
 });
 
-test('bnb-verify CLI surfaces an unknown profile as exit 9 with the real message', () => {
+test('greenloop-verify CLI surfaces an unknown profile as exit 9 with the real message', () => {
   const cwd = project({ profile: 'ghost' });
-  const CLI = new URL('../bin/bnb-verify.js', import.meta.url).pathname;
+  const CLI = new URL('../bin/greenloop-verify.js', import.meta.url).pathname;
   const r = spawnSync(process.execPath, [CLI, 't1'], { cwd, encoding: 'utf8' });
   assert.equal(r.status, 9);
   assert.match(r.stderr, /unknown profile 'ghost'/);
 });
 
-test('bnb-doctor CLI runs the merged config (project doctor override)', () => {
+test('greenloop-doctor CLI runs the merged config (project doctor override)', () => {
   const cwd = project({
     profile: 'expo-react-native',
     doctor: [{ name: 'always-green', run: 'node -e "process.exit(0)"' }],
   });
-  const CLI = new URL('../bin/bnb-doctor.js', import.meta.url).pathname;
+  const CLI = new URL('../bin/greenloop-doctor.js', import.meta.url).pathname;
   const r = spawnSync(process.execPath, [CLI], { cwd, encoding: 'utf8' });
   assert.equal(r.status, 0);
   assert.match(r.stderr, /✓ always-green/);

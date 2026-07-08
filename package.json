@@ -1,18 +1,18 @@
 {
-  "name": "breathe-and-build",
+  "name": "greenloop",
   "version": "0.1.0",
   "description": "Spec-to-verified-app system for Claude Code: human-gated planning phases plus a machine-gated build loop.",
   "type": "module",
   "license": "MIT",
   "engines": { "node": ">=20" },
   "bin": {
-    "breathe-and-build": "installer/index.js",
-    "bnb-verify": "bin/bnb-verify.js",
-    "bnb-doctor": "bin/bnb-doctor.js",
-    "bnb-loop": "bin/bnb-loop.js",
-    "bnb-stop-hook": "bin/bnb-stop-hook.js"
+    "greenloop": "installer/index.js",
+    "greenloop-verify": "bin/greenloop-verify.js",
+    "greenloop-doctor": "bin/greenloop-doctor.js",
+    "greenloop-loop": "bin/greenloop-loop.js",
+    "greenloop-stop-hook": "bin/greenloop-stop-hook.js"
   },
   "scripts": { "test": "node --test" },
   "files": ["bin", "installer", "src", "plugin", "profiles", "docs"],
-  "repository": { "type": "git", "url": "https://github.com/nitishchand/breathe-and-build" }
+  "repository": { "type": "git", "url": "https://github.com/nitishchand/greenloop" }
 }

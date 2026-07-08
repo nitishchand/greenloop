@@ -1,14 +1,14 @@
 ---
-name: bnb-architecture
+name: greenloop-architecture
 description: Backend design review facilitation — present DB schema, API surface, and offline/sync strategy for the user to challenge; confirm the tech stack; record approved decisions in state.md.
 ---
 
-# bnb-architecture — design review facilitation
+# greenloop-architecture — design review facilitation
 
 ## Hard rules
 
 1. Read the **final** `prd.md` fully before proposing anything. If it is not marked final,
-   send the user back to `/bnb:prd`.
+   send the user back to `/greenloop:prd`.
 2. You facilitate a review, not a lecture: present each area as a proposal the user is
    expected to **challenge and change**. Invite pushback explicitly.
 3. Stack confirmation is explicit. Default = `expo-react-native` profile. If the user

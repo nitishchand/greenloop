@@ -8,7 +8,7 @@ import { scaffoldProject } from '../src/core/scaffold.js';
 const quiet = () => {};
 
 function templates() {
-  const dir = mkdtempSync(join(tmpdir(), 'bnb-tpl-'));
+  const dir = mkdtempSync(join(tmpdir(), 'greenloop-tpl-'));
   mkdirSync(join(dir, 'apps/{{NAME}}-app/src'), { recursive: true });
   writeFileSync(join(dir, 'package.json'), '{ "name": "{{NAME}}", "keep": "{{UNKNOWN}}" }');
   writeFileSync(join(dir, 'apps/{{NAME}}-app/src/index.ts'), 'export const app = "{{NAME}}";');
@@ -16,7 +16,7 @@ function templates() {
 }
 
 test('copies the tree with substitution in content and path segments', () => {
-  const target = mkdtempSync(join(tmpdir(), 'bnb-out-'));
+  const target = mkdtempSync(join(tmpdir(), 'greenloop-out-'));
   const written = scaffoldProject(templates(), target, { NAME: 'clinic' }, { log: quiet });
   assert.deepEqual(written, ['apps/clinic-app/src/index.ts', 'package.json']);
   assert.match(readFileSync(join(target, 'package.json'), 'utf8'), /"name": "clinic"/);
@@ -24,13 +24,13 @@ test('copies the tree with substitution in content and path segments', () => {
 });
 
 test('unknown markers are left intact', () => {
-  const target = mkdtempSync(join(tmpdir(), 'bnb-out-'));
+  const target = mkdtempSync(join(tmpdir(), 'greenloop-out-'));
   scaffoldProject(templates(), target, { NAME: 'x' }, { log: quiet });
   assert.match(readFileSync(join(target, 'package.json'), 'utf8'), /\{\{UNKNOWN\}\}/);
 });
 
 test('throws before writing anything when a destination file exists', () => {
-  const target = mkdtempSync(join(tmpdir(), 'bnb-out-'));
+  const target = mkdtempSync(join(tmpdir(), 'greenloop-out-'));
   writeFileSync(join(target, 'package.json'), 'precious');
   assert.throws(
     () => scaffoldProject(templates(), target, { NAME: 'x' }, { log: quiet }),

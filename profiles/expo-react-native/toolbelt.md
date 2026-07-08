@@ -1,6 +1,6 @@
 # expo-react-native — toolbelt
 
-How the loop launches the app, sees the screen, and reads logs. The bnb-feature skill
+How the loop launches the app, sees the screen, and reads logs. The greenloop-feature skill
 assumes these tools; nothing here waits on a human.
 
 ## Launching

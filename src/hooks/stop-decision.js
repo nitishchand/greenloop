@@ -8,7 +8,7 @@ export function decide(progress) {
     block: true,
     reason:
       `Active task(s) not green: ${ids}. Keep going: fix the FEATURE and run ` +
-      `bnb-verify <task-id> until it exits 0. Do NOT weaken the verifier or the E2E flows. ` +
+      `greenloop-verify <task-id> until it exits 0. Do NOT weaken the verifier or the E2E flows. ` +
       `To stop legitimately, set "abandoned": true on the task in progress.json (a recorded decision).`,
   };
 }

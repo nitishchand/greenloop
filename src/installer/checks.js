@@ -1,4 +1,4 @@
-// Machine-level preflight for `npx breathe-and-build` (spec §3): everything the build
+// Machine-level preflight for `npx greenloop` (spec §3): everything the build
 // phases need, checkable before any project exists. Only Maestro is safe to auto-install;
 // the rest get exact copy-paste instructions and a re-check loop — never half-installed.
 export const CHECKS = [

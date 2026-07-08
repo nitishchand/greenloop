@@ -19,7 +19,7 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 export function scaffoldMiniclinic(targetDir, { log = console.error } = {}) {
   const written = [
     // Stack scaffold from the profile, then the §5 artifact set from the plugin —
-    // the same two steps /bnb:scaffold performs.
+    // the same two steps /greenloop:scaffold performs.
     ...scaffoldProject(`${root}profiles/expo-react-native/templates`, targetDir, VARS, { log }),
     ...scaffoldProject(`${root}plugin/templates`, targetDir, VARS, { log }),
   ];
