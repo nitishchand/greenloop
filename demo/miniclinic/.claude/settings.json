@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bnb-verify:*)",
+      "Bash(bnb-doctor:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npm start:*)",
+      "Bash(npm install)",
+      "Bash(maestro test:*)",
+      "Bash(maestro hierarchy:*)",
+      "Bash(xcrun simctl:*)",
+      "Bash(docker compose up:*)",
+      "Bash(docker compose logs:*)",
+      "Bash(docker compose ps:*)",
+      "Bash(curl -sf http://localhost:*)",
+      "Bash(npx prisma migrate dev:*)",
+      "Bash(npx prisma generate)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git status)"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(git push:*)",
+      "Bash(sudo:*)"
+    ]
+  }
+}

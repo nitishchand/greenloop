@@ -33,7 +33,28 @@ ClinicBuddy build methodology. Design spec: `docs/specs/2026-07-08-breathe-and-b
   docker-compose ×3 `unless-stopped`, curated allowlist settings.json). `loadConfig` now merges
   profile verifier/doctor under project overrides (project key wins WHOLESALE; unknown profile
   throws). Template dep versions unverified until MiniClinic runs (Plan 4).
-- 🔲 **Plan 4 — Installer + MiniClinic demo + CI dogfood + playbook docs.** Spec §3, §10–§12.
+- ✅ **Plan 4 — Installer + MiniClinic + CI + docs** (`docs/plans/2026-07-08-04-installer-demo-ci-docs.md`,
+  merged to main 2026-07-08): scaffold engine (`src/core/scaffold.js`, `{{VAR}}` substitution,
+  never overwrites), `npx breathe-and-build` installer (preflight loop, only Maestro
+  auto-installs, `--check`/`--yes`, registers plugin + Expo MCP), `demo/miniclinic`
+  (scaffold + 2 screens + patients endpoint + flow; no-drift test vs templates),
+  `.github/workflows/ci.yml` (unit gate ubuntu+macos × node 20/22; dogfood job
+  dispatch-only), docs set (tutorial/playbook/os-matrix/writing-profiles/container-mode).
+  Resolved spec §15 Q2: Metro MCP folds into Expo MCP (`claude mcp add --transport http
+  expo https://mcp.expo.dev/mcp` + `expo-mcp` dev dep + `EXPO_UNSTABLE_MCP_SERVER=1`);
+  Fetch MCP dropped (built-in WebFetch). 95 tests green.
+
+## v1 status — feature-complete, pre-release
+
+All four plans merged. Remaining steps are human/external:
+
+1. Create the GitHub repo (`nitishchand/breathe-and-build`) and push — unlocks the CI unit
+   gate and makes the marketplace installable by URL.
+2. `npm publish` — makes `npx breathe-and-build@latest` real.
+3. First provisioned dogfood run (macOS + Xcode + Maestro + ANTHROPIC_API_KEY): dispatch the
+   CI `dogfood` job or run it locally against `demo/miniclinic`; pins the profile template
+   dependency versions (currently best-known, unexecuted) and, per spec §12, the tutorial
+   should be regenerated from that run.
 
 ## Conventions
 

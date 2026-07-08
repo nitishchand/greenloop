@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "miniclinic",
+    "slug": "miniclinic",
+    "scheme": "miniclinic",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "ios": {
+      "bundleIdentifier": "com.example.miniclinic",
+      "supportsTablet": false
+    },
+    "plugins": ["expo-router"]
+  }
+}

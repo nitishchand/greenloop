@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@miniclinic/shared": ["../../packages/shared/src"]
+    }
+  },
+  "include": ["app/**/*.tsx", "app/**/*.ts", "src/**/*.ts", "src/**/*.tsx"]
+}

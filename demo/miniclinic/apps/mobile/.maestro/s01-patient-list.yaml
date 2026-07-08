@@ -1,0 +1,31 @@
+# E2E for task s01-patient-list, covering its acceptance[]:
+#   1. patient list screen renders
+#   2. user can add a patient and see it in the list
+# Text assertion (not row testID) keeps the flow repeatable against a backend whose
+# in-memory list survives app clearState.
+appId: com.example.miniclinic
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "patient-list-screen"
+    timeout: 10000
+- tapOn:
+    id: "patient-add-button"
+- extendedWaitUntil:
+    visible:
+      id: "add-patient-screen"
+    timeout: 5000
+- tapOn:
+    id: "patient-name-input"
+- inputText: "Asha Rao"
+- tapOn:
+    id: "patient-save-button"
+- extendedWaitUntil:
+    visible:
+      id: "patient-list-screen"
+    timeout: 5000
+- extendedWaitUntil:
+    visible: "Asha Rao"
+    timeout: 10000
