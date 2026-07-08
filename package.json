@@ -8,7 +8,8 @@
   "bin": {
     "bnb-verify": "bin/bnb-verify.js",
     "bnb-doctor": "bin/bnb-doctor.js",
-    "bnb-loop": "bin/bnb-loop.js"
+    "bnb-loop": "bin/bnb-loop.js",
+    "bnb-stop-hook": "bin/bnb-stop-hook.js"
   },
   "scripts": { "test": "node --test" },
   "files": ["bin", "src", "plugin", "profiles", "docs"],
