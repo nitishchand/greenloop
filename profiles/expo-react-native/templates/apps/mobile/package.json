@@ -11,22 +11,22 @@
   "dependencies": {
     "@nozbe/watermelondb": "^0.28.0",
     "@tanstack/react-query": "^5.0.0",
-    "expo": "^54.0.0",
-    "expo-router": "^6.0.0",
-    "react": "*",
-    "react-native": "*",
+    "expo": "~54.0.0",
+    "expo-router": "~6.0.0",
+    "react": "19.1.0",
+    "react-native": "~0.81.0",
     "zustand": "^5.0.0",
     "@{{PROJECT_NAME}}/shared": "*"
   },
   "devDependencies": {
     "expo-mcp": "*",
     "jest": "^29.0.0",
-    "jest-expo": "^54.0.0",
+    "jest-expo": "~54.0.0",
     "typescript": "^5.5.0",
-    "@types/react": "*"
+    "@types/react": "~19.1.0"
   },
   "jest": {
     "preset": "jest-expo"
   },
-  "_greenloop_note": "Versions are best-known at profile-authoring time; `npx expo install --fix` after the first install aligns react/react-native to the Expo SDK. Pinned for real by the MiniClinic demo (Plan 4)."
+  "_greenloop_note": "react/react-native pinned to the SDK 54 pairing (RN 0.81 / React 19.1) — a floating react-native breaks the jest-expo preset (found by the first dogfood run). When bumping the SDK, re-pin via `npx expo install --fix`."
 }
