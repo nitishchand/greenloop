@@ -4,7 +4,7 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start",
+    "start": "EXPO_UNSTABLE_MCP_SERVER=1 expo start",
     "typecheck": "tsc --noEmit",
     "test": "jest --passWithNoTests"
   },
@@ -19,6 +19,7 @@
     "@{{PROJECT_NAME}}/shared": "*"
   },
   "devDependencies": {
+    "expo-mcp": "*",
     "jest": "^29.0.0",
     "jest-expo": "^54.0.0",
     "typescript": "^5.5.0",

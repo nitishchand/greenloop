@@ -7,7 +7,11 @@ assumes these tools; nothing here waits on a human.
 
 1. Services: `docker compose up -d` (postgres, redis, backend — healthchecked; verify with
    `curl -sf http://localhost:3001/health`).
-2. Dev server: `npm start -w apps/mobile` (Metro on :8081; verify `curl -sf http://localhost:8081/status`).
+2. Dev server: `npm start -w apps/mobile` (Metro on :8081 with `EXPO_UNSTABLE_MCP_SERVER=1`
+   baked into the script so Expo MCP local capabilities attach; verify
+   `curl -sf http://localhost:8081/status`). The Expo MCP server itself is registered
+   machine-wide by the installer (`claude mcp add --transport http expo https://mcp.expo.dev/mcp`).
+   Gotcha: restarting the dev server requires reconnecting MCP in the Claude Code session (`/mcp`).
 3. App on the simulator: launched through the Expo MCP (or `i` in the Metro terminal). The
    simulator must already be booted — that's a doctor/preflight concern, not yours mid-loop.
 

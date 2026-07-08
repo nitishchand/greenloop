@@ -6,12 +6,13 @@
   "license": "MIT",
   "engines": { "node": ">=20" },
   "bin": {
+    "breathe-and-build": "installer/index.js",
     "bnb-verify": "bin/bnb-verify.js",
     "bnb-doctor": "bin/bnb-doctor.js",
     "bnb-loop": "bin/bnb-loop.js",
     "bnb-stop-hook": "bin/bnb-stop-hook.js"
   },
   "scripts": { "test": "node --test" },
-  "files": ["bin", "src", "plugin", "profiles", "docs"],
+  "files": ["bin", "installer", "src", "plugin", "profiles", "docs"],
   "repository": { "type": "git", "url": "https://github.com/nitishchand/breathe-and-build" }
 }
