@@ -62,10 +62,16 @@ All four plans merged. Remaining steps are human/external:
 1. Create the GitHub repo (`nitishchand/greenloop`) and push — unlocks the CI unit
    gate and makes the marketplace installable by URL.
 2. `npm publish` — makes `npx greenloop@latest` real.
-3. First provisioned dogfood run (macOS + Xcode + Maestro + ANTHROPIC_API_KEY): dispatch the
-   CI `dogfood` job or run it locally against `demo/miniclinic`; pins the profile template
-   dependency versions (currently best-known, unexecuted) and, per spec §12, the tutorial
-   should be regenerated from that run.
+3. Dogfood: 7 CI runs on 2026-07-08/09 (runs of `gh workflow run ci`). PROVEN on a stock
+   macos-15 runner: Maestro install, simulator boot, Expo SDK 54 install (lockfile committed),
+   typecheck+jest layers green, claude -p headless under CLAUDE_CODE_OAUTH_TOKEN (smoke-gated),
+   greenloop CLIs on PATH, verifier step timeouts (no more hangs). SOLE REMAINING BLOCKER:
+   `expo run:ios` fails compiling expo-router's ExpoHead pod — `'yoga/style/Style.h' file not
+   found` (same under newest Xcode and pinned 16.x; known SDK 54 pod header issue). Next moves:
+   reproduce locally (`cd demo/miniclinic/apps/mobile && npx expo run:ios` — much faster
+   iteration than CI), then either patch header search paths via config plugin, bump/pin
+   expo-router to a fixed release, or drop the ExpoHead target. Evidence artifacts
+   (`dogfood-evidence`) are uploaded on every run.
 
 ## Conventions
 
