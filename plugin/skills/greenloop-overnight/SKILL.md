@@ -16,7 +16,7 @@ description: Unattended boss-prompt mode — queue tasks, launch headless greenl
 3. The run uses the curated allowlist from `greenloop.config.json` (`loop.allowedTools`) — never
    `--dangerously-skip-permissions`.
 4. The outer wall-clock timeout is the caller's job: always launch as
-   `timeout 30m greenloop-loop <task-id> [max-laps]`.
+   `timeout 30m greenloop-loop <task-id> [max-laps]` (macOS: `brew install coreutils`, then `gtimeout`).
 
 ## Setting up the run
 
@@ -26,7 +26,7 @@ description: Unattended boss-prompt mode — queue tasks, launch headless greenl
 2. Confirm `spiritual-guide.md` is filled in by the user (rule 1).
 3. Run `greenloop-doctor`; exit 3 → fix the environment first. An overnight run into a broken
    env burns every lap.
-4. Launch per task, sequentially: `timeout 30m greenloop-loop <task-id> 20`. The loop runs
+4. Launch per task, sequentially: `timeout 30m greenloop-loop <task-id> 20` (macOS: `gtimeout` from coreutils). The loop runs
    `claude -p` laps gated by `greenloop-verify`; exit 0 = green, 1 = max laps without green.
 
 ## The wake-up ritual (mandatory, in order)

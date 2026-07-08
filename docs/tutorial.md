@@ -59,5 +59,5 @@ the task is red — that's the Stop hook.
 ## 6. Overnight variant
 
 `/greenloop:overnight s02-...` queues well-specified tasks and launches
-`timeout 30m greenloop-loop <task> 20` laps. In the morning, the wake-up ritual: review the full
+`timeout 30m greenloop-loop <task> 20` laps (macOS: `gtimeout` from `brew install coreutils`). In the morning, the wake-up ritual: review the full
 diff, re-run `greenloop-verify` yourself. Only a fresh exit 0 counts.

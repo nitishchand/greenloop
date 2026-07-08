@@ -31,7 +31,7 @@ All commands run in the *target project* directory (the app being built) and rea
 |---|---|
 | `greenloop-verify <task-id>` | The green gate: typecheck → unit → env preflight → E2E, fail-fast. Sole writer of `passes` in `progress.json`. |
 | `greenloop-doctor` | Runs every environment check from config, prints the full ✓/✗ fix-it list. |
-| `greenloop-loop <task-id> [max-laps]` | Headless laps: runs `claude -p` with the boss prompt, gates each lap on `greenloop-verify`. Wrap in `timeout 30m ...` for unattended runs. |
+| `greenloop-loop <task-id> [max-laps]` | Headless laps: runs `claude -p` with the boss prompt, gates each lap on `greenloop-verify`. Wrap in `timeout 30m ...` (macOS: `gtimeout`, from `brew install coreutils`) for unattended runs. |
 | `greenloop-stop-hook` | Claude Code Stop hook: blocks the session from stopping while an active task is red (exit 2). Escape hatch: set `"abandoned": true` on the task. |
 
 ## Exit-code contract
