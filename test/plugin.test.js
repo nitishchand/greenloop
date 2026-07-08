@@ -13,6 +13,40 @@ test('plugin manifest is valid and named bnb', () => {
   assert.ok(manifest.description.length > 0);
 });
 
+const TEMPLATES = [
+  'prd.md', 'state.md', 'debug.md', 'progress.json',
+  'spiritual-guide.md', 'remaining-tasks.md', 'CLAUDE.md',
+];
+
+test('all 7 artifact templates exist', () => {
+  for (const t of TEMPLATES) {
+    assert.ok(existsSync(`${root}plugin/templates/${t}`), `missing template ${t}`);
+  }
+});
+
+test('prd template carries the screen-spec format with testIDs', () => {
+  const prd = read('plugin/templates/prd.md');
+  assert.match(prd, /S-01/);
+  assert.match(prd, /testIDs/);
+  assert.match(prd, /Gaps log/i);
+});
+
+test('progress template parses with an empty tasks array', () => {
+  const progress = json('plugin/templates/progress.json');
+  assert.deepEqual(progress.tasks, []);
+});
+
+test('CLAUDE.md template enforces the verify gate and sole-writer rule', () => {
+  const claudeMd = read('plugin/templates/CLAUDE.md');
+  assert.match(claudeMd, /bnb-verify/);
+  assert.match(claudeMd, /passes/);
+});
+
+test('spiritual-guide template has at least 4 prompt sections', () => {
+  const guide = read('plugin/templates/spiritual-guide.md');
+  assert.ok(guide.split('\n').filter((l) => l.startsWith('## ')).length >= 4);
+});
+
 test('marketplace lists the bnb plugin sourced from ./plugin', () => {
   const marketplace = json('.claude-plugin/marketplace.json');
   assert.equal(marketplace.name, 'breathe-and-build');
