@@ -1,3 +1,4 @@
+> **Historical document:** written under the project's original name (breathe-and-build / bnb), renamed to **GreenLoop / greenloop** on 2026-07-09. Names below are as they were at implementation time; the code has been renamed.
 # BnB Installer + MiniClinic + CI + Playbook Implementation Plan (Plan 4 of 4)
 
 > **For agentic workers:** Steps use checkbox (`- [ ]`) syntax for tracking. Implement task-by-task, TDD where there is testable structure; commit per task.
@@ -128,3 +129,4 @@ Tests: each file exists with 2–3 key markers (tutorial: `miniclinic` + `bnb-ve
 - **Spec coverage:** §3 installer responsibilities 1–5 → Task 2 (preflight loop / plugin / MCP / accessibility / container pointer); §12 demo + CI → Tasks 3–4 (with the dogfood job's honesty caveat); §10 playbook → Task 5; §11 matrix → Task 5; §15 Q2 resolved in header. Tutorial-generated-from-CI-run (§12) is deferred until the dogfood job actually runs on a provisioned runner — tutorial mirrors the committed demo instead; recorded in state.md.
 - **Contract safety:** new `bin` entry only adds; smoke test updated in the same commit. Scaffold engine never overwrites. Installer `--check` is side-effect-free.
 - **Honest limits:** demo E2E/typecheck never executed in this repo (no Expo install here); the no-drift test pins structure, the dogfood job is the executor. Stated in state.md.
+

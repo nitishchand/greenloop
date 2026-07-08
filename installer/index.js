@@ -6,7 +6,7 @@ import { runInstaller } from '../src/installer/run.js';
 
 const args = new Set(process.argv.slice(2));
 if (args.has('--help') || args.has('-h')) {
-  console.error('usage: npx breathe-and-build [--check] [--yes]');
+  console.error('usage: npx greenloop [--check] [--yes]');
   console.error('  --check  preflight report only (exit 0 ready / 3 not ready); changes nothing');
   console.error('  --yes    auto-confirm the safe auto-installs (Maestro)');
   process.exit(0);

@@ -1,28 +1,38 @@
-# Breathe-and-Build — Project State
+# GreenLoop — Project State
 
-**Last updated:** 2026-07-08
-**Repo:** `/Users/nitishchand/codebase/breathe-and-build` (local only — no GitHub remote yet)
+**Last updated:** 2026-07-09
+**Repo:** `/Users/nitishchand/codebase/breathe-and-build` (local only — no GitHub remote yet;
+the directory name predates the rename — renaming the folder is optional and safe)
 
 ## What is this
 
 Open-source spec-to-verified-app system for Claude Code (npx installer + plugin), codifying the
-ClinicBuddy build methodology. Design spec: `docs/specs/2026-07-08-breathe-and-build-design.md`
+ClinicBuddy build methodology. Design spec: `docs/specs/2026-07-08-greenloop-design.md`
 (approved). Implementation split into 4 plans; plan docs live in `docs/plans/`.
+
+## Naming
+
+Renamed 2026-07-09: **breathe-and-build / bnb → GreenLoop / greenloop**, one name everywhere
+(package, plugin, marketplace, CLIs `greenloop-*`, `/greenloop:*` commands, `greenloop.config.json`,
+`.greenloop/` results dir, `greenloop-*` skills). Done pre-publish, so nothing external references
+the old name. Plan docs in `docs/plans/` keep the old names as historical record (header note in
+each); the design spec was updated as a living doc. npm names `greenloop`/`green-loop` were
+unclaimed as of 2026-07-09.
 
 ## Status by plan
 
 - ✅ **Plan 1 — Core engine** (`docs/plans/2026-07-08-01-core-engine.md`, merged to main 2026-07-08):
   zero-dep Node ESM package, 27 tests green (`npm test`).
-  CLIs: `bnb-verify` (green gate, exit 0/1/3/9, sole writer of `passes`), `bnb-doctor`
-  (fix-it list, exit 0/3), `bnb-loop` (headless laps via `claude -p`), `bnb-stop-hook`
+  CLIs: `greenloop-verify` (green gate, exit 0/1/3/9, sole writer of `passes`), `greenloop-doctor`
+  (fix-it list, exit 0/3), `greenloop-loop` (headless laps via `claude -p`), `greenloop-stop-hook`
   (blocks stop while active task red; escape = `abandoned:true`).
   Contracts documented in README.md — Plans 2–4 build on them; do not change without care.
 - ✅ **Plan 2 — Plugin** (`docs/plans/2026-07-08-02-plugin.md`, merged to main 2026-07-08):
-  plugin name `bnb` (`plugin/.claude-plugin/plugin.json`), repo-root marketplace
-  (`.claude-plugin/marketplace.json`, install: `claude plugin install bnb@breathe-and-build`),
-  8 flat commands in `plugin/commands/` (`/bnb` router + idea/prd/architecture/scaffold/
+  plugin name `greenloop` (`plugin/.claude-plugin/plugin.json`), repo-root marketplace
+  (`.claude-plugin/marketplace.json`, install: `claude plugin install greenloop@greenloop`),
+  8 flat commands in `plugin/commands/` (`/greenloop` router + idea/prd/architecture/scaffold/
   feature/overnight/doctor), 5 skills, 7 artifact templates, self-contained Stop hook
-  (`plugin/hooks/verify-before-stop.js`, parity-tested vs `bnb-stop-hook`). 54 tests green;
+  (`plugin/hooks/verify-before-stop.js`, parity-tested vs `greenloop-stop-hook`). 54 tests green;
   `claude plugin validate` clean. Resolved spec §15 Q1 (packaging) + Q3 (spiritual-guide
   prompts). NOTE: skill/command frontmatter descriptions with a colon must be quoted
   (YAML) — guarded by test.
@@ -35,7 +45,7 @@ ClinicBuddy build methodology. Design spec: `docs/specs/2026-07-08-breathe-and-b
   throws). Template dep versions unverified until MiniClinic runs (Plan 4).
 - ✅ **Plan 4 — Installer + MiniClinic + CI + docs** (`docs/plans/2026-07-08-04-installer-demo-ci-docs.md`,
   merged to main 2026-07-08): scaffold engine (`src/core/scaffold.js`, `{{VAR}}` substitution,
-  never overwrites), `npx breathe-and-build` installer (preflight loop, only Maestro
+  never overwrites), `npx greenloop` installer (preflight loop, only Maestro
   auto-installs, `--check`/`--yes`, registers plugin + Expo MCP), `demo/miniclinic`
   (scaffold + 2 screens + patients endpoint + flow; no-drift test vs templates),
   `.github/workflows/ci.yml` (unit gate ubuntu+macos × node 20/22; dogfood job
@@ -48,9 +58,9 @@ ClinicBuddy build methodology. Design spec: `docs/specs/2026-07-08-breathe-and-b
 
 All four plans merged. Remaining steps are human/external:
 
-1. Create the GitHub repo (`nitishchand/breathe-and-build`) and push — unlocks the CI unit
+1. Create the GitHub repo (`nitishchand/greenloop`) and push — unlocks the CI unit
    gate and makes the marketplace installable by URL.
-2. `npm publish` — makes `npx breathe-and-build@latest` real.
+2. `npm publish` — makes `npx greenloop@latest` real.
 3. First provisioned dogfood run (macOS + Xcode + Maestro + ANTHROPIC_API_KEY): dispatch the
    CI `dogfood` job or run it locally against `demo/miniclinic`; pins the profile template
    dependency versions (currently best-known, unexecuted) and, per spec §12, the tutorial

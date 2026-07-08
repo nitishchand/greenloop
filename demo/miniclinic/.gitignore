@@ -1,5 +1,5 @@
 node_modules/
-.bnb/
+.greenloop/
 .env
 .expo/
 dist/

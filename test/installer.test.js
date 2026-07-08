@@ -34,7 +34,7 @@ test('all green: registers plugin then MCP, returns 0', () => {
     assert.equal(c, 0);
     const joined = exec.calls.join('\n');
     assert.match(joined, /claude plugin marketplace add \/pkg/);
-    assert.match(joined, /claude plugin install bnb@breathe-and-build/);
+    assert.match(joined, /claude plugin install greenloop@greenloop/);
     assert.match(joined, /claude mcp add --transport http expo https:\/\/mcp\.expo\.dev\/mcp/);
     assert.ok(
       joined.indexOf('plugin install') < joined.indexOf('mcp add'),
@@ -78,7 +78,7 @@ test('user quits the re-check loop: returns 3, nothing registered', async () => 
 });
 
 test('integration: --check exits 0 with stubbed toolchain on PATH', () => {
-  const stubDir = mkdtempSync(join(tmpdir(), 'bnb-stub-'));
+  const stubDir = mkdtempSync(join(tmpdir(), 'greenloop-stub-'));
   for (const tool of ['claude', 'docker', 'xcrun', 'maestro']) {
     const stub = join(stubDir, tool);
     writeFileSync(stub, '#!/bin/sh\nexit 0\n');

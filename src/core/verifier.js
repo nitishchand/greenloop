@@ -10,16 +10,16 @@ export function runVerify(taskId, { cwd, config, progressPath, exec = runShell, 
   try {
     progress = loadProgress(progressPath);
   } catch {
-    log(`bnb-verify: cannot read ${progressPath}`);
+    log(`greenloop-verify: cannot read ${progressPath}`);
     return EXIT.USAGE;
   }
   const task = taskId ? findTask(progress, taskId) : null;
   if (!task) {
-    log(`bnb-verify: unknown task '${taskId ?? ''}'`);
+    log(`greenloop-verify: unknown task '${taskId ?? ''}'`);
     return EXIT.USAGE;
   }
 
-  const resultsDir = join(cwd, config.resultsDir ?? '.bnb/results', taskId);
+  const resultsDir = join(cwd, config.resultsDir ?? '.greenloop/results', taskId);
   mkdirSync(resultsDir, { recursive: true });
   const tailLines = config.tailLines ?? 40;
   const v = config.verifier ?? {};
@@ -52,7 +52,7 @@ export function runVerify(taskId, { cwd, config, progressPath, exec = runShell, 
 
   if (v.e2e) {
     if (!task.flow) {
-      log(`bnb-verify: task '${taskId}' has no 'flow' path but e2e is configured`);
+      log(`greenloop-verify: task '${taskId}' has no 'flow' path but e2e is configured`);
       return EXIT.USAGE;
     }
     const { code, output } = exec(v.e2e.run.replaceAll('{flow}', task.flow), { cwd });

@@ -1,6 +1,6 @@
 {
   "_schema": {
-    "note": "Task ledger. 'passes' is written ONLY by bnb-verify. 'active: true' arms the Stop hook. Every field of a task, by example:",
+    "note": "Task ledger. 'passes' is written ONLY by greenloop-verify. 'active: true' arms the Stop hook. Every field of a task, by example:",
     "example": {
       "id": "s01-login",
       "spec": "Login screen per PRD S-01",

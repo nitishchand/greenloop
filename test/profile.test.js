@@ -10,7 +10,7 @@ const json = (p) => JSON.parse(read(p));
 const T = `${PROFILE}/templates`;
 const TEMPLATE_FILES = [
   'package.json', 'docker-compose.yml', '.env.example', '.gitignore',
-  'bnb.config.json', '.claude/settings.json',
+  'greenloop.config.json', '.claude/settings.json',
   'apps/mobile/package.json', 'apps/mobile/tsconfig.json', 'apps/mobile/app.json',
   'apps/mobile/app/_layout.tsx', 'apps/mobile/app/index.tsx', 'apps/mobile/.maestro/smoke.yaml',
   'apps/backend/package.json', 'apps/backend/tsconfig.json', 'apps/backend/src/index.ts',
@@ -42,14 +42,14 @@ test('curated allowlist denies rm, git push, and sudo', () => {
   for (const denied of ['Bash(rm:*)', 'Bash(git push:*)', 'Bash(sudo:*)']) {
     assert.ok(permissions.deny.includes(denied), `must deny ${denied}`);
   }
-  assert.ok(permissions.allow.includes('Bash(bnb-verify:*)'));
+  assert.ok(permissions.allow.includes('Bash(greenloop-verify:*)'));
 });
 
-test('project bnb.config.json binds the profile and leaves verifier to the merge', () => {
-  const config = json(`${T}/bnb.config.json`);
+test('project greenloop.config.json binds the profile and leaves verifier to the merge', () => {
+  const config = json(`${T}/greenloop.config.json`);
   assert.equal(config.profile, 'expo-react-native');
   assert.equal(config.verifier, undefined);
-  assert.match(config.loop.allowedTools, /bnb-verify/);
+  assert.match(config.loop.allowedTools, /greenloop-verify/);
 });
 
 test('smoke flow uses clearState and extendedWaitUntil against home-screen', () => {

@@ -1,16 +1,16 @@
 ---
-name: bnb-feature
-description: "The green loop for one task — Plan, Implement, Author E2E, Verify with bnb-verify, Self-correct via subagent investigation, Checkpoint. Machine-gated: done means exit 0, with anti-reward-hacking rules enforced structurally."
+name: greenloop-feature
+description: "The green loop for one task — Plan, Implement, Author E2E, Verify with greenloop-verify, Self-correct via subagent investigation, Checkpoint. Machine-gated: done means exit 0, with anti-reward-hacking rules enforced structurally."
 ---
 
-# bnb-feature — the green loop
+# greenloop-feature — the green loop
 
 ## Hard rules
 
-1. **Never edit `passes`** in `progress.json` — `bnb-verify` is its sole writer. The only
-   evidence of green is `bnb-verify <task-id>` exiting **0**; quote the exit code.
+1. **Never edit `passes`** in `progress.json` — `greenloop-verify` is its sole writer. The only
+   evidence of green is `greenloop-verify <task-id>` exiting **0**; quote the exit code.
 2. **Never weaken the verifier or an E2E flow** to force a pass. Deleting assertions,
-   loosening waits, or editing `bnb.config.json` mid-loop is reward hacking and will show
+   loosening waits, or editing `greenloop.config.json` mid-loop is reward hacking and will show
    in the checkpoint diff review.
 3. **Commit the flow before chasing green** (step 3). Any later weakening of it appears in
    the diff, on purpose.
@@ -29,8 +29,8 @@ description: "The green loop for one task — Plan, Implement, Author E2E, Verif
 3. **Author the E2E flow first** — inspect the live view tree (toolbelt), confirm the
    testIDs are present, write the flow covering every `acceptance[]` item, then
    **commit the flow** before any green-chasing.
-4. **Verify** — run `bnb-verify <task-id>`. Read the exit code and the failing tail.
-   Exit 3 = environment, run `bnb-doctor`, fix, retry — not a code failure.
+4. **Verify** — run `greenloop-verify <task-id>`. Read the exit code and the failing tail.
+   Exit 3 = environment, run `greenloop-doctor`, fix, retry — not a code failure.
 5. **Self-correct** — spawn an investigation subagent with: the task's spec/acceptance/
    testIDs, the failing tail, and prior `reflexions[]`. It returns hypothesis + evidence
    excerpt + suggested fix in ≤250 words and **never edits files**. Append a Reflexion
@@ -44,9 +44,9 @@ description: "The green loop for one task — Plan, Implement, Author E2E, Verif
 
 | Thought | Reality |
 |---|---|
-| "Unit tests pass, so it's done" | Done = bnb-verify exit 0, which includes the E2E layer. |
+| "Unit tests pass, so it's done" | Done = greenloop-verify exit 0, which includes the E2E layer. |
 | "I'll tweak the flow so it passes" | That's reward hacking. Fix the feature, not the test. |
 | "The screen probably renders" | Screenshot it. Blank/black = crash, not done. |
 | "Context is long, let me wrap up" | Reset instead: fresh session, resume from progress.json. |
-| "I'll just set passes: true" | You never write `passes`. Only bnb-verify does. |
+| "I'll just set passes: true" | You never write `passes`. Only greenloop-verify does. |
 | "Verify is flaky, third try counts" | A pass that needs retries is evidence of a real bug. Investigate (step 5). |

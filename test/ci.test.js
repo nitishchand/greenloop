@@ -16,8 +16,8 @@ test('unit job gates push and PR on both OSes', () => {
 test('dogfood job is dispatch-only and runs the §12 loop', () => {
   assert.match(ci, /^  dogfood:/m);
   assert.match(ci, /workflow_dispatch/);
-  assert.match(ci, /bnb-loop(\.js)? s01-patient-list/);
-  assert.match(ci, /bnb-verify(\.js)? s01-patient-list/);
+  assert.match(ci, /greenloop-loop(\.js)? s01-patient-list/);
+  assert.match(ci, /greenloop-verify(\.js)? s01-patient-list/);
   // the dogfood job must not run on push/PR — only the dispatch guard allows it
   assert.match(ci, /if: github\.event_name == 'workflow_dispatch'/);
 });

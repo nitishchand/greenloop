@@ -43,7 +43,7 @@ export async function runInstaller({
     if (manual.length > 0 || !autoYes) {
       const answer = await ask('Apply the fixes above, then press enter to re-check (q to quit): ');
       if (answer.trim().toLowerCase() === 'q') {
-        log('Stopping. Nothing was half-installed — re-run `npx breathe-and-build` any time.');
+        log('Stopping. Nothing was half-installed — re-run `npx greenloop` any time.');
         return 3;
       }
     }
@@ -51,10 +51,10 @@ export async function runInstaller({
   if (checkOnly) return 0;
 
   // 2. Register the plugin (ships inside this npm package).
-  log('Registering the BnB plugin with Claude Code...');
+  log('Registering the GreenLoop plugin with Claude Code...');
   exec(`claude plugin marketplace add ${packageRoot}`, {});
-  const install = exec('claude plugin install bnb@breathe-and-build', {});
-  log(install.code === 0 ? '✓ plugin bnb@breathe-and-build installed' : '✗ plugin install failed — run it manually: claude plugin install bnb@breathe-and-build');
+  const install = exec('claude plugin install greenloop@greenloop', {});
+  log(install.code === 0 ? '✓ plugin greenloop@greenloop installed' : '✗ plugin install failed — run it manually: claude plugin install greenloop@greenloop');
 
   // 3. Register the Expo MCP server (Metro folds into it; WebFetch is built into Claude Code).
   const mcp = exec('claude mcp add --transport http expo https://mcp.expo.dev/mcp', {});
@@ -68,8 +68,8 @@ export async function runInstaller({
   log('REMINDER: grant your terminal/IDE macOS Accessibility permission');
   log('  (System Settings > Privacy & Security > Accessibility) or simulator automation will silently fail.');
   log('OPTIONAL: container mode (backend/web work only — the iOS Simulator cannot run in a');
-  log('  Linux container): see docs/container-mode.md in the breathe-and-build repo.');
+  log('  Linux container): see docs/container-mode.md in the greenloop repo.');
   log('');
-  log('Done. Open Claude Code in an empty project directory and run /bnb to begin.');
+  log('Done. Open Claude Code in an empty project directory and run /greenloop to begin.');
   return 0;
 }

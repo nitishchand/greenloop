@@ -1,6 +1,6 @@
 # {{PROJECT_NAME}} — Product Requirements Document
 
-**Status:** draft (the `/bnb:prd` gap-hunting loop ends only when a full pass finds zero gaps
+**Status:** draft (the `/greenloop:prd` gap-hunting loop ends only when a full pass finds zero gaps
 AND you declare this PRD final — then change this line to `final`).
 
 ## Vision
@@ -59,7 +59,7 @@ A create-only entity is a gap.}}
 
 ## Gaps log
 
-The `/bnb:prd` loop appends one line per pass: `pass N — gaps found: M`. The PRD may be
+The `/greenloop:prd` loop appends one line per pass: `pass N — gaps found: M`. The PRD may be
 declared final only after a pass with `gaps found: 0`.
 
 - pass 1 — gaps found: —

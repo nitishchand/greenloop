@@ -28,5 +28,5 @@
   "jest": {
     "preset": "jest-expo"
   },
-  "_bnb_note": "Versions are best-known at profile-authoring time; `npx expo install --fix` after the first install aligns react/react-native to the Expo SDK. Pinned for real by the MiniClinic demo (Plan 4)."
+  "_greenloop_note": "Versions are best-known at profile-authoring time; `npx expo install --fix` after the first install aligns react/react-native to the Expo SDK. Pinned for real by the MiniClinic demo (Plan 4)."
 }

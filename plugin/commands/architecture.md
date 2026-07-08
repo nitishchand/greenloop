@@ -1,8 +1,8 @@
 ---
-description: Phase 3 (breathe) — backend design review (schema, API, offline/sync) + tech-stack confirmation.
+description: Phase 3 (planning) — backend design review (schema, API, offline/sync) + tech-stack confirmation.
 ---
 
-You are in the **architecture** phase. Use the `bnb-architecture` skill — it defines the
+You are in the **architecture** phase. Use the `greenloop-architecture` skill — it defines the
 review facilitation (present DB schema, API surface, offline/sync strategy for the user to
 challenge and change).
 
@@ -12,4 +12,4 @@ profile, or (b) proceeding off the paved road with a best-effort custom `verifie
 whose quality the user owns.
 
 Human gate: explicit user approval of architecture + stack, recorded in `state.md`.
-Then point at `/bnb:scaffold`.
+Then point at `/greenloop:scaffold`.

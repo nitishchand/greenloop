@@ -28,7 +28,7 @@ docker run -it --rm \
   isolation, run the DB inside the same container instead.
 - The verifier's E2E layer must be a container-runnable adapter (API-level tests); the
   Maestro/simulator layer is unavailable here by definition — configure the project's
-  `bnb.config.json` `verifier.e2e` accordingly and say so in `state.md`.
+  `greenloop.config.json` `verifier.e2e` accordingly and say so in `state.md`.
 
 ## What you give up
 

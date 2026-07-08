@@ -7,7 +7,7 @@ import { runVerify, EXIT } from '../src/core/verifier.js';
 import { loadProgress } from '../src/core/progress.js';
 
 const CONFIG = {
-  resultsDir: '.bnb/results',
+  resultsDir: '.greenloop/results',
   tailLines: 3,
   verifier: {
     typecheck: [{ name: 'tsc', run: 'fake-tsc' }],
@@ -18,7 +18,7 @@ const CONFIG = {
 };
 
 function setup(task = { id: 't1', flow: 'flows/t1.yaml', passes: false }) {
-  const cwd = mkdtempSync(join(tmpdir(), 'bnb-'));
+  const cwd = mkdtempSync(join(tmpdir(), 'greenloop-'));
   const progressPath = join(cwd, 'progress.json');
   writeFileSync(progressPath, JSON.stringify({ tasks: [task] }));
   return { cwd, progressPath };
@@ -50,7 +50,7 @@ test('typecheck failure -> RED, passes:false, tail printed, log written', () => 
   assert.match(lines.join('\n'), /typecheck\/tsc failed \(exit 2\)/);
   assert.match(lines.join('\n'), /boom/);
   assert.ok(!lines.join('\n').includes('a\nb')); // only the 3-line tail
-  assert.ok(existsSync(join(cwd, '.bnb/results/t1/tsc.log')));
+  assert.ok(existsSync(join(cwd, '.greenloop/results/t1/tsc.log')));
   assert.equal(exec.calls.length, 1); // fail-fast: unit never ran
 });
 
@@ -70,7 +70,7 @@ test('e2e uses the task flow and failure -> RED', () => {
   const code = runVerify('t1', { cwd, config: CONFIG, progressPath, exec, log: quiet });
   assert.equal(code, EXIT.RED);
   assert.ok(exec.calls.includes('maestro test flows/t1.yaml'));
-  assert.match(readFileSync(join(cwd, '.bnb/results/t1/e2e.log'), 'utf8'), /flow failed/);
+  assert.match(readFileSync(join(cwd, '.greenloop/results/t1/e2e.log'), 'utf8'), /flow failed/);
 });
 
 test('task without flow when e2e configured -> USAGE', () => {

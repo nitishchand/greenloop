@@ -1,4 +1,4 @@
-# Breathe-and-Build (BnB) — Design Spec
+# GreenLoop — Design Spec
 
 **Date:** 2026-07-08
 **Status:** Approved design, pre-implementation
@@ -9,18 +9,19 @@
 
 ## 1. Vision & positioning
 
-BnB is a **spec-to-verified-app system**: an npx installer + Claude Code plugin that takes a
+GreenLoop is a **spec-to-verified-app system**: an npx installer + Claude Code plugin that takes a
 person from an idea to a working, E2E-verified app through human-gated planning phases and a
 machine-gated build loop.
 
-One-line differentiator vs gsd-core: *gsd tells the agent what to build; BnB forces it to prove
+One-line differentiator vs gsd-core: *gsd tells the agent what to build; GreenLoop forces it to prove
 it built it.* Every feature must survive a committed, tamper-evident verifier (typecheck + unit +
 real E2E on a simulator) before the agent is allowed to stop.
 
-- **Breathe** = the deliberate, human-in-the-loop iteration phases (idea → PRD gap-hunting →
+- **Plan** = the deliberate, human-in-the-loop iteration phases (idea → PRD gap-hunting →
   architecture review).
-- **Build** = the autonomous loop-engineered green loop (Plan → Implement → Author E2E →
-  Verify → Self-correct → Checkpoint), enforced by a Stop hook.
+- **Build** = the autonomous green loop (Plan → Implement → Author E2E → Verify →
+  Self-correct → Checkpoint), enforced by a Stop hook. The loop is only done when the
+  verifier is green — hence the name.
 
 This project codifies the exact methodology used to build ClinicBuddy, generalized for open
 source.
@@ -29,38 +30,38 @@ source.
 
 | Decision | Choice |
 |---|---|
-| Name | **breathe-and-build** (npm package + repo); `bnb` as CLI alias and command prefix (`/bnb:*`). "BNB" alone collides with the Binance coin in search — always publish under the full name. |
-| Form factor | Claude Code plugin **plus** `npx breathe-and-build@latest` guided installer |
+| Name | **GreenLoop** / **greenloop** everywhere: npm package, repo, plugin name, CLI prefix (`greenloop-verify`), command prefix (`/greenloop:*`), config (`greenloop.config.json`). One name, zero ambiguity. Renamed 2026-07-09 from the original *breathe-and-build / bnb* (pre-publish, so no external references); npm name availability verified. |
+| Form factor | Claude Code plugin **plus** `npx greenloop@latest` guided installer |
 | v1 build target | One stack profile done excellently: **expo-react-native** (the ClinicBuddy stack), macOS + iOS Simulator. Profile interface designed for more from day 1. |
-| Skill dependencies | **Self-contained** — no superpowers prerequisite; BnB ships its own PRD/planning/debugging skills tuned to this workflow |
-| Greenfield vs brownfield | **Greenfield only** in v1; `/bnb:onboard` for existing repos is v2 |
+| Skill dependencies | **Self-contained** — no superpowers prerequisite; GreenLoop ships its own PRD/planning/debugging skills tuned to this workflow |
+| Greenfield vs brownfield | **Greenfield only** in v1; `/greenloop:onboard` for existing repos is v2 |
 | Screen designs | PRD generator writes structured screen specs (ClinicBuddy prd.md style) by default; user may optionally attach Excalidraw/Figma references |
 | Safety posture | Curated **allowlist by default** (no bypass needed for the loop); optional documented container recipe for full-bypass users |
-| Workflow UX | **Phase commands + status router** (`/bnb` tells you where you are; explicit `/bnb:<phase>` commands) |
+| Workflow UX | **Phase commands + status router** (`/greenloop` tells you where you are; explicit `/greenloop:<phase>` commands) |
 | Portability | Verify/loop drivers written in **Node, not bash** (Windows/Linux future); artifacts renamed `progress.txt` → `progress.json`; `spiritual-guide.md` keeps its name (fits the brand) |
 | License | MIT |
 
 ## 3. Distribution & repo layout
 
-Single GitHub repo `breathe-and-build`, publishing one npm package.
+Single GitHub repo `greenloop`, publishing one npm package.
 
 ```
-breathe-and-build/
-  installer/                 # what `npx breathe-and-build@latest` runs
+greenloop/
+  installer/                 # what `npx greenloop@latest` runs
   plugin/                    # Claude Code plugin
     .claude-plugin/          #   plugin manifest
-    commands/bnb/            #   phase commands (thin: route into skills)
+    commands/                #   phase commands, flat (plugin name provides /greenloop:*)
     skills/                  #   self-contained skills (see §6)
     hooks/                   #   Stop hook (verify-before-stop)
   profiles/
     expo-react-native/       # v1 — fully shipped (see §7)
     flutter/                 # v2 — spec'd in roadmap only
-  bin/                       # Node CLIs: bnb-verify, bnb-loop, bnb-doctor
+  bin/                       # Node CLIs: greenloop-verify, greenloop-loop, greenloop-doctor
   demo/miniclinic/           # canonical dogfood app (CI target, §11)
   docs/                      # tutorial, playbook, OS matrix, adapter guide
 ```
 
-### Installer responsibilities (`npx breathe-and-build@latest`)
+### Installer responsibilities (`npx greenloop@latest`)
 
 1. Preflight every dependency (Claude Code, Node, Docker, Xcode + iOS Simulator, Maestro).
    Auto-install only what is safe and scriptable (e.g. Maestro CLI); for the rest (Xcode,
@@ -73,20 +74,20 @@ breathe-and-build/
 
 ## 4. Phase pipeline (commands)
 
-Bare **`/bnb`** is the status router: reads `state.md` → "You are in <phase>. Next: <command>."
+Bare **`/greenloop`** is the status router: reads `state.md` → "You are in <phase>. Next: <command>."
 
 | Command | Phase | Human gate |
 |---|---|---|
-| `/bnb:idea` | Long free-form conversation about what the user wants to build. Ends by drafting `prd.md` v0. | User confirms the draft direction |
-| `/bnb:prd` | The gap-hunting iteration loop (see below) | Exits only when a full pass finds **zero gaps** AND the user declares the PRD final |
-| `/bnb:architecture` | Backend design review: DB schema, API surface, offline/sync strategy presented for the user to challenge and change. Tech-stack confirmation happens here (default = expo-react-native profile; overriding warns about losing the tuned verifier). | User approves architecture + stack |
-| `/bnb:scaffold` | Births the project from the bound profile (§7): monorepo, Dockerized DB+BE, seeds, verifier, hooks, allowlist, all artifacts (§5) | User reviews scaffold + `spiritual-guide.md` they must fill in |
-| `/bnb:feature <id>` | The green loop (§8) | Machine gate: `bnb-verify` exit 0; then code review + commit |
-| `/bnb:overnight <tasks>` | Unattended boss-prompt mode (§8, headless variant) | Wake-up ritual: diff review + verify re-run before anything is trusted |
-| `/bnb:doctor` | Environment health (profile-declared checks): simulator booted, Docker up, Metro reachable, LAN IP vs `.env.local`, MCPs connected, Maestro installed, accessibility permission | — |
-| `/bnb:on-device` | (v1.x) Real-device testing over WiFi, IP baked into build — port of ClinicBuddy's testing-on-device skill | — |
+| `/greenloop:idea` | Long free-form conversation about what the user wants to build. Ends by drafting `prd.md` v0. | User confirms the draft direction |
+| `/greenloop:prd` | The gap-hunting iteration loop (see below) | Exits only when a full pass finds **zero gaps** AND the user declares the PRD final |
+| `/greenloop:architecture` | Backend design review: DB schema, API surface, offline/sync strategy presented for the user to challenge and change. Tech-stack confirmation happens here (default = expo-react-native profile; overriding warns about losing the tuned verifier). | User approves architecture + stack |
+| `/greenloop:scaffold` | Births the project from the bound profile (§7): monorepo, Dockerized DB+BE, seeds, verifier, hooks, allowlist, all artifacts (§5) | User reviews scaffold + `spiritual-guide.md` they must fill in |
+| `/greenloop:feature <id>` | The green loop (§8) | Machine gate: `greenloop-verify` exit 0; then code review + commit |
+| `/greenloop:overnight <tasks>` | Unattended boss-prompt mode (§8, headless variant) | Wake-up ritual: diff review + verify re-run before anything is trusted |
+| `/greenloop:doctor` | Environment health (profile-declared checks): simulator booted, Docker up, Metro reachable, LAN IP vs `.env.local`, MCPs connected, Maestro installed, accessibility permission | — |
+| `/greenloop:on-device` | (v1.x) Real-device testing over WiFi, IP baked into build — port of ClinicBuddy's testing-on-device skill | — |
 
-### The PRD gap-hunting loop (`/bnb:prd`)
+### The PRD gap-hunting loop (`/greenloop:prd`)
 
 Codifies the 5–6 manual iterations used for ClinicBuddy:
 
@@ -103,10 +104,10 @@ Users may optionally attach Excalidraw/Figma links or files, referenced from the
 
 ### Phase-gated prerequisites
 
-Each command declares what it needs, and nothing more. `/bnb:idea`, `/bnb:prd`,
-`/bnb:architecture` need only Claude Code — the entire planning phase runs on any machine with
-zero mobile tooling. Xcode/Simulator/Docker are demanded only at `/bnb:scaffold` and
-`/bnb:feature`. `/bnb:doctor` is the single diagnostic reused by the installer preflight and by
+Each command declares what it needs, and nothing more. `/greenloop:idea`, `/greenloop:prd`,
+`/greenloop:architecture` need only Claude Code — the entire planning phase runs on any machine with
+zero mobile tooling. Xcode/Simulator/Docker are demanded only at `/greenloop:scaffold` and
+`/greenloop:feature`. `/greenloop:doctor` is the single diagnostic reused by the installer preflight and by
 the verifier's exit-code-3 path, so a missing tool is caught at a phase boundary with a fix-it
 list, never as a mid-loop surprise.
 
@@ -119,7 +120,7 @@ All templated by the profile, all committed:
 | `prd.md` | Source of truth for requirements; structured screen specs with testIDs |
 | `state.md` | Living project state: stack, done-by-area, conventions, gotchas. Updated at every checkpoint; read at session start. |
 | `debug.md` | Numbered bug ledger (symptom → root cause → fix → lesson). Future sessions read it first and cite entries ("see Bug 8"). |
-| `progress.json` | Task ledger. Per task: `spec`, `acceptance[]`, `testIDs[]`, `flow`, `active` (arms the Stop hook), `passes` (**written only by bnb-verify**), `reflexions[]`, `abandoned`. The structured resume artifact for fresh sessions. |
+| `progress.json` | Task ledger. Per task: `spec`, `acceptance[]`, `testIDs[]`, `flow`, `active` (arms the Stop hook), `passes` (**written only by greenloop-verify**), `reflexions[]`, `abandoned`. The structured resume artifact for fresh sessions. |
 | `spiritual-guide.md` | The user's business essence + priorities (filled at scaffold time). The answer-of-last-resort oracle for unattended runs, so the loop never blocks on the user. |
 | `remaining-tasks.md` | Cross-session skip ledger for deferred critical work |
 | `CLAUDE.md` | Generated per project: read state.md/debug.md first, LAN-IP session check, profile toolbelt usage, "commit after verified" |
@@ -128,12 +129,12 @@ All templated by the profile, all committed:
 
 Shipped in the plugin; no external plugin dependency:
 
-- `bnb-prd` — the gap-hunting loop (§4)
-- `bnb-architecture` — schema/API review facilitation
-- `bnb-feature` — the green loop (§8)
-- `bnb-debugging` — systematic debugging tuned to the loop: subagent-delegated investigation,
+- `greenloop-prd` — the gap-hunting loop (§4)
+- `greenloop-architecture` — schema/API review facilitation
+- `greenloop-feature` — the green loop (§8)
+- `greenloop-debugging` — systematic debugging tuned to the loop: subagent-delegated investigation,
   evidence-before-hypothesis, debug.md citation and appending
-- `bnb-overnight` — headless mode rules + spiritual-guide fallback protocol
+- `greenloop-overnight` — headless mode rules + spiritual-guide fallback protocol
 
 Commands are thin wrappers that set phase context and invoke the matching skill.
 
@@ -145,7 +146,7 @@ a verifier adapter:
 ```
 profiles/<name>/
   templates/     # project scaffold: monorepo, docker-compose, CLAUDE.md, artifact templates
-  verifier.json  # layer commands + e2e adapter (consumed by bnb-verify)
+  verifier.json  # layer commands + e2e adapter (consumed by greenloop-verify)
   toolbelt.md    # how the loop launches the app, reads logs, screenshots, dumps view tree
   conventions.md # testID naming, where E2E flows live, styling idioms
   doctor.json    # required tools + env checks for this profile
@@ -174,13 +175,13 @@ current Maestro docs at implementation time.)*
 
 ### Unsupported stacks
 
-If the user picks a stack with no profile at `/bnb:architecture`, BnB says so honestly and
-offers: (a) stay on a supported profile, or (b) proceed off the paved road — BnB generates a
+If the user picks a stack with no profile at `/greenloop:architecture`, GreenLoop says so honestly and
+offers: (a) stay on a supported profile, or (b) proceed off the paved road — GreenLoop generates a
 best-effort custom `verifier.json` and the user owns its quality. No silent degradation.
 
 ## 8. The feature loop & verifier contract
 
-### `bnb-feature` (interactive, primary)
+### `greenloop-feature` (interactive, primary)
 
 ClinicBuddy's develop-feature skill made profile-agnostic:
 
@@ -191,7 +192,7 @@ ClinicBuddy's develop-feature skill made profile-agnostic:
 3. **Author E2E first** — inspect the live view tree, confirm testIDs present, write the flow
    covering `acceptance[]`, **commit the flow before chasing green** (weakening later shows in
    the diff).
-4. **Verify** — run `bnb-verify <task-id>`; read exit code + failing tail.
+4. **Verify** — run `greenloop-verify <task-id>`; read exit code + failing tail.
 5. **Self-correct** — investigation is **delegated to a subagent** (gets spec/acceptance/
    testIDs, the failing tail, prior `reflexions[]`; returns hypothesis + evidence excerpt +
    suggested fix, ≤250 words; does not edit files). Main loop appends a Reflexion entry and
@@ -199,7 +200,7 @@ ClinicBuddy's develop-feature skill made profile-agnostic:
 6. **Checkpoint** — code review (doubles as tamper check on the diff), commit,
    `active: false`, update `state.md`/`debug.md` if something non-obvious was learned.
 
-### Verifier contract (`bnb-verify`, Node CLI)
+### Verifier contract (`greenloop-verify`, Node CLI)
 
 Every profile's verifier honors:
 
@@ -211,18 +212,18 @@ Every profile's verifier honors:
 - Committed and tamper-evident: modifying the verifier or flows to force a pass is defined as
   reward hacking in the skills, and shows in the checkpoint diff review.
 
-### `bnb-loop` (headless, `/bnb:overnight`)
+### `greenloop-loop` (headless, `/greenloop:overnight`)
 
 Node port of ralph.sh: `claude -p` laps until green or max-laps, wrapped in a timeout, with the
 restricted allowlist. The boss prompt instructs: never wait on the user — consult
 `spiritual-guide.md` to resolve open questions. Wake-up ritual (in the skill): review the full
-diff + re-run `bnb-verify` before trusting anything.
+diff + re-run `greenloop-verify` before trusting anything.
 
 ## 9. Hooks & safety
 
 - **Stop hook** (`verify-before-stop`, Node): blocks stopping while the active task is red.
   Legitimate escape hatch: set `abandoned: true` (a recorded decision, not a workaround).
-- **Permissions**: scaffold writes a curated project `settings.json` allowlist (bnb-verify,
+- **Permissions**: scaffold writes a curated project `settings.json` allowlist (greenloop-verify,
   npm test/typecheck, maestro, simctl, profile MCP tools; deny `rm`, `git push`) so the loop
   runs hands-off **without** `--dangerously-skip-permissions`.
 - **Optional container mode** (documented recipe, not the default): Claude in Docker with
@@ -251,24 +252,24 @@ diff + re-run `bnb-verify` before trusting anything.
 | Linux | Planning phases only | ✅ Full once `maestro-android` profile lands (**first post-v1 milestone**) |
 | Windows | Planning phases only | Via WSL2 with `maestro-android`; native later |
 
-Portability decisions supporting this: all drivers (bnb-verify, bnb-loop, doctor, Stop hook)
+Portability decisions supporting this: all drivers (greenloop-verify, greenloop-loop, doctor, Stop hook)
 in Node; the E2E target device (iOS sim / Android emulator / physical device) is a declared
 profile field checked by doctor.
 
 ## 12. Testing & dogfooding
 
 - **Canonical demo app** `demo/miniclinic` (2 screens + 1 API endpoint): CI runs the installer,
-  scaffolds it from the profile, runs one `/bnb:feature` headlessly (bnb-loop), and asserts
+  scaffolds it from the profile, runs one `/greenloop:feature` headlessly (greenloop-loop), and asserts
   the verifier goes green. The tutorial is generated from the same run so docs can't drift.
-- Unit tests for bnb-verify exit-code semantics and the Stop hook.
+- Unit tests for greenloop-verify exit-code semantics and the Stop hook.
 - The skills themselves follow writing-skills discipline (red-flag tables, hard rules up top).
 
 ## 13. Roadmap
 
 - **v1**: everything above with the `expo-react-native` profile, macOS.
-- **v1.x**: `/bnb:on-device`; `maestro-android` profile (unlocks Linux/Windows-WSL2).
+- **v1.x**: `/greenloop:on-device`; `maestro-android` profile (unlocks Linux/Windows-WSL2).
 - **v2**: `flutter` profile; `playwright-web` + `api-integration` verifier adapters (non-mobile
-  apps); brownfield `/bnb:onboard`; community profile contribution guide.
+  apps); brownfield `/greenloop:onboard`; community profile contribution guide.
 
 ## 14. Out of scope for v1
 

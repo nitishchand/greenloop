@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
-const BIN_HOOK = new URL('../bin/bnb-stop-hook.js', import.meta.url).pathname;
+const BIN_HOOK = new URL('../bin/greenloop-stop-hook.js', import.meta.url).pathname;
 const PLUGIN_HOOK = new URL('../plugin/hooks/verify-before-stop.js', import.meta.url).pathname;
 
 function runHook(hook, cwd, input) {
@@ -13,7 +13,7 @@ function runHook(hook, cwd, input) {
 }
 
 function project(tasks) {
-  const cwd = mkdtempSync(join(tmpdir(), 'bnb-phook-'));
+  const cwd = mkdtempSync(join(tmpdir(), 'greenloop-phook-'));
   if (tasks !== undefined) writeFileSync(join(cwd, 'progress.json'), JSON.stringify({ tasks }));
   return cwd;
 }

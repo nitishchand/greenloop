@@ -1,6 +1,6 @@
 # {{PROJECT_NAME}}
 
-Built with Breathe-and-Build ({{PROFILE}} profile).
+Built with GreenLoop ({{PROFILE}} profile).
 
 ## Session start — always
 
@@ -11,10 +11,10 @@ Built with Breathe-and-Build ({{PROFILE}} profile).
 
 ## The green gate
 
-- A feature is done when `bnb-verify <task-id>` exits **0** — not when unit tests pass,
+- A feature is done when `greenloop-verify <task-id>` exits **0** — not when unit tests pass,
   not when the screen "looks right". Exit codes: 0 green · 1 red · 3 env not ready
-  (run `bnb-doctor`) · 9 unknown task.
-- `passes` in `progress.json` is written **only** by `bnb-verify`. Never edit it by hand.
+  (run `greenloop-doctor`) · 9 unknown task.
+- `passes` in `progress.json` is written **only** by `greenloop-verify`. Never edit it by hand.
 - Never weaken the verifier config or an E2E flow to force a pass — that is reward
   hacking and it shows in the checkpoint diff review.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Self-contained copy of bin/bnb-stop-hook.js: ${CLAUDE_PLUGIN_ROOT} only reaches the
+// Self-contained copy of bin/greenloop-stop-hook.js: ${CLAUDE_PLUGIN_ROOT} only reaches the
 // installed plugin/ tree, so this script cannot import from the package's src/.
 // Behavioral parity is enforced by test/plugin-hook.test.js.
 import { readFileSync, existsSync } from 'node:fs';
@@ -26,7 +26,7 @@ if (red.length > 0) {
   const ids = red.map((t) => t.id).join(', ');
   console.error(
     `Active task(s) not green: ${ids}. Keep going: fix the FEATURE and run ` +
-    `bnb-verify <task-id> until it exits 0. Do NOT weaken the verifier or the E2E flows. ` +
+    `greenloop-verify <task-id> until it exits 0. Do NOT weaken the verifier or the E2E flows. ` +
     `To stop legitimately, set "abandoned": true on the task in progress.json (a recorded decision).`,
   );
   process.exit(2);

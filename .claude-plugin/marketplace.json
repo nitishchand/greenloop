@@ -1,10 +1,10 @@
 {
-  "name": "breathe-and-build",
+  "name": "greenloop",
   "owner": { "name": "Nitish Chand" },
-  "description": "Breathe-and-Build: spec-to-verified-app system for Claude Code — human-gated planning phases plus a machine-gated, E2E-verified build loop.",
+  "description": "GreenLoop: spec-to-verified-app system for Claude Code — human-gated planning phases plus a machine-gated, E2E-verified build loop.",
   "plugins": [
     {
-      "name": "bnb",
+      "name": "greenloop",
       "source": "./plugin",
       "description": "Spec-to-verified-app system: human-gated planning + machine-gated build loop."
     }

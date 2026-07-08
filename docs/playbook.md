@@ -1,11 +1,11 @@
-# Playbook: running BnB economically
+# Playbook: running GreenLoop economically
 
 Token economy is a first-class goal (spec §10). The system enforces most of it structurally;
 this is the operator's side.
 
 ## What the structure already does
 
-- **Failing-tail discipline**: `bnb-verify` writes full logs to `.bnb/results/<task>/` and
+- **Failing-tail discipline**: `greenloop-verify` writes full logs to `.greenloop/results/<task>/` and
   prints only the failing tail (default 40 lines). The agent reads a scalpel, not a haystack.
 - **Subagent-capped investigation**: debugging skills delegate log-spelunking to subagents
   that return ≤250-word conclusions. Streams (Metro, backend) get a log-watcher subagent
@@ -24,13 +24,13 @@ this is the operator's side.
 ## Model strategy
 
 Route routine implementation laps to a cheaper model and save the strongest model for hard
-debugging sessions. With `bnb-loop`, set the model per run (`claude -p` inherits your
+debugging sessions. With `greenloop-loop`, set the model per run (`claude -p` inherits your
 configured default; use `/model` interactively). The loop's lap structure makes this cheap
 to change per task.
 
 ## Cache-friendly cadence
 
 Anthropic's prompt cache has a short TTL: keep verify-fix-verify iterations tight rather
-than wandering between tasks, and let `bnb-loop` laps run back-to-back — a lap that pauses
+than wandering between tasks, and let `greenloop-loop` laps run back-to-back — a lap that pauses
 for minutes pays the cache miss on resume. Batch artifact reads (state.md + debug.md +
 progress.json at session start, as CLAUDE.md instructs) so they land in one cached prefix.

@@ -1,8 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(bnb-verify:*)",
-      "Bash(bnb-doctor:*)",
+      "Bash(greenloop-verify:*)",
+      "Bash(greenloop-doctor:*)",
       "Bash(npm test:*)",
       "Bash(npm run typecheck:*)",
       "Bash(npm start:*)",

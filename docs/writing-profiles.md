@@ -1,21 +1,21 @@
 # Writing a stack profile
 
 A profile is data, not code: five files under `profiles/<name>/` that the engines and
-skills consume. If your stack can express these five files honestly, BnB can drive it.
+skills consume. If your stack can express these five files honestly, GreenLoop can drive it.
 
 ## Anatomy
 
 | File | Contract |
 |---|---|
-| `verifier.json` | Layer commands for `bnb-verify`: `typecheck[]` → `unit[]` (fail-fast, each `{name, run}`), `preflight[]` (`{name, run, fixHint}` — failures are exit 3, not code failures), `e2e` (`{adapter, run}` where `run` contains the literal `{flow}`, replaced by the task's flow path) |
-| `doctor.json` | Array of `{name, run, fixHint}` environment checks for `bnb-doctor`; all run, no fail-fast — the user gets the full fix-it list |
+| `verifier.json` | Layer commands for `greenloop-verify`: `typecheck[]` → `unit[]` (fail-fast, each `{name, run}`), `preflight[]` (`{name, run, fixHint}` — failures are exit 3, not code failures), `e2e` (`{adapter, run}` where `run` contains the literal `{flow}`, replaced by the task's flow path) |
+| `doctor.json` | Array of `{name, run, fixHint}` environment checks for `greenloop-doctor`; all run, no fail-fast — the user gets the full fix-it list |
 | `toolbelt.md` | How the loop launches the app, **sees the screen** (screenshot = the render proof), dumps the view tree, and reads logs without flooding context |
 | `conventions.md` | testID (or equivalent) naming, where E2E flows live, wait discipline, code idioms to copy |
 | `templates/` | The scaffold tree; `{{PROJECT_NAME}}`-style markers substituted by the scaffold engine, which never overwrites existing files |
 
 ## Resolution
 
-A project binds a profile in `bnb.config.json` (`"profile": "<name>"`). `loadConfig` merges
+A project binds a profile in `greenloop.config.json` (`"profile": "<name>"`). `loadConfig` merges
 the profile's `verifier`/`doctor` under the project's config with one rule: **a key present
 in the project config replaces the profile's key wholesale** — no deep merging, no
 surprises. An unknown profile name is a hard error.

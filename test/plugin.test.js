@@ -6,15 +6,15 @@ const root = new URL('..', import.meta.url).pathname;
 const read = (p) => readFileSync(`${root}${p}`, 'utf8');
 const json = (p) => JSON.parse(read(p));
 
-test('plugin manifest is valid and named bnb', () => {
+test('plugin manifest is valid and named greenloop', () => {
   const manifest = json('plugin/.claude-plugin/plugin.json');
-  assert.equal(manifest.name, 'bnb');
+  assert.equal(manifest.name, 'greenloop');
   assert.equal(manifest.version, json('package.json').version);
   assert.ok(manifest.description.length > 0);
 });
 
-const COMMANDS = ['bnb', 'idea', 'prd', 'architecture', 'scaffold', 'feature', 'overnight', 'doctor'];
-const SKILL_ROUTED = { prd: 'bnb-prd', architecture: 'bnb-architecture', feature: 'bnb-feature', overnight: 'bnb-overnight' };
+const COMMANDS = ['greenloop', 'idea', 'prd', 'architecture', 'scaffold', 'feature', 'overnight', 'doctor'];
+const SKILL_ROUTED = { prd: 'greenloop-prd', architecture: 'greenloop-architecture', feature: 'greenloop-feature', overnight: 'greenloop-overnight' };
 
 function frontmatter(body) {
   const match = body.match(/^---\n([\s\S]*?)\n---\n/);
@@ -75,35 +75,35 @@ function assertSkill(name, markers) {
   }
 }
 
-test('bnb-prd skill: gap-hunting loop discipline', () => {
-  assertSkill('bnb-prd', [/gaps found:/, /red.flags/i, /one at a time/i, /testIDs/]);
+test('greenloop-prd skill: gap-hunting loop discipline', () => {
+  assertSkill('greenloop-prd', [/gaps found:/, /red.flags/i, /one at a time/i, /testIDs/]);
 });
 
-test('bnb-architecture skill: default profile + warn on override', () => {
-  assertSkill('bnb-architecture', [/expo-react-native/, /warn/i, /red.flags/i, /offline/i]);
+test('greenloop-architecture skill: default profile + warn on override', () => {
+  assertSkill('greenloop-architecture', [/expo-react-native/, /warn/i, /red.flags/i, /offline/i]);
 });
 
-test('bnb-feature skill: green loop with anti-reward-hacking rules', () => {
-  assertSkill('bnb-feature', [
-    /bnb-verify/, /reward hacking/i, /commit the flow/i, /subagent/i, /red.flags/i, /never edit .?passes/i,
+test('greenloop-feature skill: green loop with anti-reward-hacking rules', () => {
+  assertSkill('greenloop-feature', [
+    /greenloop-verify/, /reward hacking/i, /commit the flow/i, /subagent/i, /red.flags/i, /never edit .?passes/i,
   ]);
 });
 
-test('bnb-debugging skill: evidence-first with debug.md citation', () => {
-  assertSkill('bnb-debugging', [/debug\.md/, /see Bug/i, /subagent/i, /red.flags/i, /evidence/i]);
+test('greenloop-debugging skill: evidence-first with debug.md citation', () => {
+  assertSkill('greenloop-debugging', [/debug\.md/, /see Bug/i, /subagent/i, /red.flags/i, /evidence/i]);
 });
 
-test('bnb-overnight skill: spiritual-guide fallback + wake-up ritual', () => {
-  assertSkill('bnb-overnight', [/spiritual-guide\.md/, /bnb-loop/, /wake-up ritual/i, /red.flags/i]);
+test('greenloop-overnight skill: spiritual-guide fallback + wake-up ritual', () => {
+  assertSkill('greenloop-overnight', [/spiritual-guide\.md/, /greenloop-loop/, /wake-up ritual/i, /red.flags/i]);
 });
 
 test('exactly the 5 self-contained skills ship in the plugin', () => {
   const skills = readdirSync(`${root}plugin/skills`).sort();
-  assert.deepEqual(skills, ['bnb-architecture', 'bnb-debugging', 'bnb-feature', 'bnb-overnight', 'bnb-prd']);
+  assert.deepEqual(skills, ['greenloop-architecture', 'greenloop-debugging', 'greenloop-feature', 'greenloop-overnight', 'greenloop-prd']);
 });
 
 test('README documents the plugin install', () => {
-  assert.match(read('README.md'), /bnb@breathe-and-build/);
+  assert.match(read('README.md'), /greenloop@greenloop/);
 });
 
 const TEMPLATES = [
@@ -131,7 +131,7 @@ test('progress template parses with an empty tasks array', () => {
 
 test('CLAUDE.md template enforces the verify gate and sole-writer rule', () => {
   const claudeMd = read('plugin/templates/CLAUDE.md');
-  assert.match(claudeMd, /bnb-verify/);
+  assert.match(claudeMd, /greenloop-verify/);
   assert.match(claudeMd, /passes/);
 });
 
@@ -140,12 +140,12 @@ test('spiritual-guide template has at least 4 prompt sections', () => {
   assert.ok(guide.split('\n').filter((l) => l.startsWith('## ')).length >= 4);
 });
 
-test('marketplace lists the bnb plugin sourced from ./plugin', () => {
+test('marketplace lists the greenloop plugin sourced from ./plugin', () => {
   const marketplace = json('.claude-plugin/marketplace.json');
-  assert.equal(marketplace.name, 'breathe-and-build');
+  assert.equal(marketplace.name, 'greenloop');
   assert.equal(marketplace.plugins.length, 1);
   const [entry] = marketplace.plugins;
-  assert.equal(entry.name, 'bnb');
+  assert.equal(entry.name, 'greenloop');
   assert.equal(entry.source, './plugin');
   assert.ok(statSync(`${root}plugin`).isDirectory());
 });

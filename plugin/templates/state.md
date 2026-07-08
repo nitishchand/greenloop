@@ -13,7 +13,7 @@
 
 ## Architecture decisions
 
-{{Written by /bnb:architecture after user approval: DB schema summary, API surface,
+{{Written by /greenloop:architecture after user approval: DB schema summary, API surface,
 offline/sync strategy, and any deviations from the profile defaults.}}
 
 ## Status by area

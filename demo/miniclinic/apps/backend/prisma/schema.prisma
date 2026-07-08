@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Replace with the entities approved in /bnb:architecture (see state.md).
+// Replace with the entities approved in /greenloop:architecture (see state.md).
 model ExampleItem {
   id        String   @id @default(uuid())
   title     String

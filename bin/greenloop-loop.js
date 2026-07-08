@@ -9,7 +9,7 @@ const cwd = process.cwd();
 const taskId = process.argv[2];
 const maxLaps = Number(process.argv[3] ?? 20);
 if (!taskId) {
-  console.error('usage: bnb-loop <task-id> [max-laps]   (wrap in `timeout 30m ...` for unattended runs)');
+  console.error('usage: greenloop-loop <task-id> [max-laps]   (wrap in `timeout 30m ...` for unattended runs)');
   process.exit(9);
 }
 
@@ -17,7 +17,7 @@ let config;
 try {
   config = loadConfig(cwd);
 } catch (err) {
-  console.error(`bnb-loop: ${err.code === 'ENOENT' ? 'no bnb.config.json in this directory' : err.message}`);
+  console.error(`greenloop-loop: ${err.code === 'ENOENT' ? 'no greenloop.config.json in this directory' : err.message}`);
   process.exit(9);
 }
 const loopCfg = config.loop ?? {};

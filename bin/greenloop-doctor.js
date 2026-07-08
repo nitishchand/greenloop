@@ -6,7 +6,7 @@ let config;
 try {
   config = loadConfig(process.cwd());
 } catch (err) {
-  console.error(`bnb-doctor: ${err.code === 'ENOENT' ? 'no bnb.config.json in this directory' : err.message}`);
+  console.error(`greenloop-doctor: ${err.code === 'ENOENT' ? 'no greenloop.config.json in this directory' : err.message}`);
   process.exit(9);
 }
 process.exit(runDoctor(config.doctor ?? []));
