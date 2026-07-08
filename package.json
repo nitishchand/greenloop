@@ -1,0 +1,16 @@
+{
+  "name": "breathe-and-build",
+  "version": "0.1.0",
+  "description": "Spec-to-verified-app system for Claude Code: human-gated planning phases plus a machine-gated build loop.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "bin": {
+    "bnb-verify": "bin/bnb-verify.js",
+    "bnb-doctor": "bin/bnb-doctor.js",
+    "bnb-loop": "bin/bnb-loop.js"
+  },
+  "scripts": { "test": "node --test" },
+  "files": ["bin", "src", "plugin", "profiles", "docs"],
+  "repository": { "type": "git", "url": "https://github.com/nitishchand/breathe-and-build" }
+}
