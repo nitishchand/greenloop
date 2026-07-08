@@ -1,0 +1,11 @@
+{
+  "name": "breathe-and-build",
+  "owner": { "name": "Nitish Chand" },
+  "plugins": [
+    {
+      "name": "bnb",
+      "source": "./plugin",
+      "description": "Spec-to-verified-app system: human-gated planning + machine-gated build loop."
+    }
+  ]
+}
