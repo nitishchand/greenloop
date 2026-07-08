@@ -9,8 +9,8 @@ const taskId = process.argv[2];
 let config;
 try {
   config = loadConfig(cwd);
-} catch {
-  console.error('bnb-verify: no bnb.config.json in this directory');
+} catch (err) {
+  console.error(`bnb-verify: ${err.code === 'ENOENT' ? 'no bnb.config.json in this directory' : err.message}`);
   process.exit(EXIT.USAGE);
 }
 
