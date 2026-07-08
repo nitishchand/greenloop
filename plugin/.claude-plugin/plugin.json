@@ -1,0 +1,10 @@
+{
+  "name": "bnb",
+  "displayName": "Breathe-and-Build",
+  "version": "0.1.0",
+  "description": "Spec-to-verified-app: human-gated planning phases (breathe) plus a machine-gated build loop (build). Commands: /bnb status router + idea, prd, architecture, scaffold, feature, overnight, doctor.",
+  "author": { "name": "Nitish Chand" },
+  "repository": "https://github.com/nitishchand/breathe-and-build",
+  "license": "MIT",
+  "keywords": ["verified-builds", "e2e", "loop-engineering", "spec-driven"]
+}
