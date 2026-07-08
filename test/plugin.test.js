@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, existsSync, statSync, readdirSync } from 'node:fs';
 
 const root = new URL('..', import.meta.url).pathname;
 const read = (p) => readFileSync(`${root}${p}`, 'utf8');
@@ -11,6 +11,39 @@ test('plugin manifest is valid and named bnb', () => {
   assert.equal(manifest.name, 'bnb');
   assert.equal(manifest.version, json('package.json').version);
   assert.ok(manifest.description.length > 0);
+});
+
+const COMMANDS = ['bnb', 'idea', 'prd', 'architecture', 'scaffold', 'feature', 'overnight', 'doctor'];
+const SKILL_ROUTED = { prd: 'bnb-prd', architecture: 'bnb-architecture', feature: 'bnb-feature', overnight: 'bnb-overnight' };
+
+function frontmatter(body) {
+  const match = body.match(/^---\n([\s\S]*?)\n---\n/);
+  assert.ok(match, 'missing frontmatter');
+  return match[1];
+}
+
+test('exactly the 8 phase commands exist', () => {
+  const files = readdirSync(`${root}plugin/commands`).sort();
+  assert.deepEqual(files, COMMANDS.map((c) => `${c}.md`).sort());
+});
+
+test('every command has a non-empty description in frontmatter', () => {
+  for (const c of COMMANDS) {
+    const fm = frontmatter(read(`plugin/commands/${c}.md`));
+    assert.match(fm, /description:\s*\S+/, `${c}.md description`);
+  }
+});
+
+test('feature and overnight declare argument hints', () => {
+  for (const c of ['feature', 'overnight']) {
+    assert.match(frontmatter(read(`plugin/commands/${c}.md`)), /argument-hint:\s*\S+/, `${c}.md`);
+  }
+});
+
+test('skill-routed commands name their skill', () => {
+  for (const [c, skill] of Object.entries(SKILL_ROUTED)) {
+    assert.ok(read(`plugin/commands/${c}.md`).includes(skill), `${c}.md must route to ${skill}`);
+  }
 });
 
 const TEMPLATES = [
