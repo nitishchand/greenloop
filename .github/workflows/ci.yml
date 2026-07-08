@@ -63,6 +63,11 @@ jobs:
       - name: Install Claude Code
         run: npm install -g @anthropic-ai/claude-code
 
+      # The boss prompt tells the agent to run `greenloop-verify` — it must be on PATH
+      # (run 5: the lap burned itself discovering this and npm-installing the package).
+      - name: Install greenloop CLIs on PATH
+        run: npm install -g .
+
       # Headless claude ignores the project allowlist in an untrusted workspace;
       # pre-seed trust for the demo dir (first run surfaced this).
       - name: Trust the demo workspace for headless permissions
@@ -98,6 +103,16 @@ jobs:
           npm start -w apps/mobile &
           sleep 20
           curl -sf http://localhost:3001/health
+
+      # Metro alone is not an app: Maestro needs com.example.miniclinic actually
+      # installed on the simulator (run 5: e2e hung forever without it). Debug build
+      # connects to the already-running Metro.
+      - name: Build and install the app on the simulator
+        working-directory: demo/miniclinic/apps/mobile
+        timeout-minutes: 35
+        env:
+          EXPO_NO_TELEMETRY: "1"
+        run: npx expo run:ios --no-bundler
 
       - name: Arm the task and run the headless green loop
         working-directory: demo/miniclinic
