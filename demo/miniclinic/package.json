@@ -2,11 +2,19 @@
   "name": "miniclinic",
   "private": true,
   "version": "0.1.0",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "typecheck": "npm run typecheck -ws --if-present",
     "test": "npm test -ws --if-present",
     "start": "npm start -w apps/mobile"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  },
+  "overrides": {
+    "react-native": "~0.81.0"
+  }
 }
