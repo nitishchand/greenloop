@@ -93,6 +93,10 @@ test('conventions.md pins testID naming, flow location, and wait discipline', ()
   }
 });
 
+test('README documents the profile abstraction', () => {
+  assert.match(read('README.md'), /profiles\/expo-react-native/);
+});
+
 test('doctor.json covers the spec §4 environment checks with fix hints', () => {
   const doctor = json(`${PROFILE}/doctor.json`);
   const names = doctor.map((c) => c.name);
