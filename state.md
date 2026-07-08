@@ -1,8 +1,9 @@
 # GreenLoop — Project State
 
 **Last updated:** 2026-07-09
-**Repo:** `/Users/nitishchand/codebase/breathe-and-build` (local only — no GitHub remote yet;
-the directory name predates the rename — renaming the folder is optional and safe)
+**Repo:** https://github.com/nitishchand/greenloop (pushed 2026-07-09; CI unit gate green).
+Local dir `/Users/nitishchand/codebase/breathe-and-build` — name predates the rename; renaming
+the folder is optional and safe.
 
 ## What is this
 
