@@ -1,0 +1,28 @@
+{
+  "typecheck": [
+    { "name": "mobile-tsc", "run": "npm run typecheck -w apps/mobile" },
+    { "name": "backend-tsc", "run": "npm run typecheck -w apps/backend" }
+  ],
+  "unit": [
+    { "name": "mobile-jest", "run": "npm test -w apps/mobile" },
+    { "name": "backend-jest", "run": "npm test -w apps/backend" }
+  ],
+  "preflight": [
+    {
+      "name": "backend-up",
+      "run": "curl -sf http://localhost:3001/health",
+      "fixHint": "docker compose up -d (then wait for the backend healthcheck)"
+    },
+    {
+      "name": "simulator-booted",
+      "run": "xcrun simctl list devices | grep -q Booted",
+      "fixHint": "Boot a simulator: open -a Simulator, or `xcrun simctl boot \"iPhone 16\"`"
+    },
+    {
+      "name": "metro-up",
+      "run": "curl -sf http://localhost:8081/status",
+      "fixHint": "Start the dev server: npm start -w apps/mobile"
+    }
+  ],
+  "e2e": { "adapter": "maestro-ios", "run": "maestro test {flow}" }
+}
