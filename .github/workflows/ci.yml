@@ -55,6 +55,15 @@ jobs:
           curl -fsSL "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
+      # RN 0.81 pods (yoga headers) break under the image's newest Xcode; pin to the
+      # newest Xcode 16.x on the image (run 6: 'yoga/style/Style.h' file not found).
+      - name: Select Xcode 16 toolchain
+        run: |
+          ls -d /Applications/Xcode*.app
+          XC=$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$XC" ]; then sudo xcode-select -s "$XC"; fi
+          xcodebuild -version
+
       - name: Boot iOS simulator
         run: |
           UDID=$(xcrun simctl list devices available -j | node -e "const d=JSON.parse(require('fs').readFileSync(0));console.log(Object.values(d.devices).flat().find(x=>/iPhone/.test(x.name)).udid)")
