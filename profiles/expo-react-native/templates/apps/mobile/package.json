@@ -6,15 +6,20 @@
   "scripts": {
     "start": "EXPO_UNSTABLE_MCP_SERVER=1 expo start",
     "typecheck": "tsc --noEmit",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@nozbe/watermelondb": "^0.28.0",
     "@tanstack/react-query": "^5.0.0",
     "expo": "~54.0.0",
     "expo-router": "~6.0.0",
-    "react": "^19.1.4",
-    "react-native": "~0.81.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0",
     "zustand": "^5.0.0",
     "@{{PROJECT_NAME}}/shared": "*"
   },
@@ -28,5 +33,5 @@
   "jest": {
     "preset": "jest-expo"
   },
-  "_greenloop_note": "react/react-native pinned to the SDK 54 pairing (RN 0.81 / React 19.1) — a floating react-native breaks the jest-expo preset (found by the first dogfood run). When bumping the SDK, re-pin via `npx expo install --fix`."
+  "_greenloop_note": "Everything with native code is pinned to the exact SDK 54 set (RN 0.81.5 / React 19.1.0 / screens 4.16 / safe-area 5.6), mirrored by root overrides — expo-router declares screens/safe-area as `*`, and a floating react-native-screens (4.25+) breaks the ExpoHead pod build (yoga headers + renamed RNS classes; found by dogfood runs 7-8). When bumping the SDK, re-pin via `npx expo install --fix` and update the root overrides to match."
 }

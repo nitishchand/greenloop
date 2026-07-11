@@ -1,6 +1,6 @@
 # GreenLoop — Project State
 
-**Last updated:** 2026-07-09
+**Last updated:** 2026-07-11
 **Repo:** https://github.com/nitishchand/greenloop (pushed 2026-07-09; CI unit gate green).
 Local dir `/Users/nitishchand/codebase/breathe-and-build` — name predates the rename; renaming
 the folder is optional and safe.
@@ -65,13 +65,23 @@ All four plans merged. Remaining steps are human/external:
 3. Dogfood: 7 CI runs on 2026-07-08/09 (runs of `gh workflow run ci`). PROVEN on a stock
    macos-15 runner: Maestro install, simulator boot, Expo SDK 54 install (lockfile committed),
    typecheck+jest layers green, claude -p headless under CLAUDE_CODE_OAUTH_TOKEN (smoke-gated),
-   greenloop CLIs on PATH, verifier step timeouts (no more hangs). SOLE REMAINING BLOCKER:
-   `expo run:ios` fails compiling expo-router's ExpoHead pod — `'yoga/style/Style.h' file not
-   found` (same under newest Xcode and pinned 16.x; known SDK 54 pod header issue). Next moves:
-   reproduce locally (`cd demo/miniclinic/apps/mobile && npx expo run:ios` — much faster
-   iteration than CI), then either patch header search paths via config plugin, bump/pin
-   expo-router to a fixed release, or drop the ExpoHead target. Evidence artifacts
-   (`dogfood-evidence`) are uploaded on every run.
+   greenloop CLIs on PATH, verifier step timeouts (no more hangs).
+   **ExpoHead blocker SOLVED 2026-07-11 (locally; run 8 = CI confirmation):** the
+   `'yoga/style/Style.h' file not found` failure was never an Xcode problem — expo-router
+   declares `react-native-screens: "*"` (and safe-area as `*`), so npm floated screens to
+   4.25+/4.26, whose header layout breaks ExpoHead's yoga includes AND whose renamed
+   `RNSBottomTabs*` → `RNSTabs*` classes break `LinkPreviewNativeNavigation.mm` (second error
+   hidden behind the first). React/react-dom/react-native had drifted the same way (19.2.7 /
+   0.81.6 vs the SDK 54 set 19.1.0 / 0.81.5), giving duplicate react copies in the workspace.
+   Fix (templates + demo, no-drift kept): pin the exact SDK 54 native set in
+   apps/mobile/package.json (react 19.1.0, react-dom 19.1.0, react-native 0.81.5,
+   react-native-screens ~4.16.0, react-native-safe-area-context ~5.6.0) and mirror it in the
+   workspace-root `overrides` so npm can never split them. Verified locally on Xcode 26.6:
+   ExpoHead pod compiles clean, full `expo run:ios` Build Succeeded + installed on the
+   simulator (the exit-1 after install was sandbox osascript, not the build). CI Xcode 16 pin
+   removed (was chasing the wrong cause). Prebuild's package.json edits (android/ios scripts)
+   folded into the template; generated `apps/mobile/ios|android` now gitignored.
+   Evidence artifacts (`dogfood-evidence`) are uploaded on every run.
 
 ## Conventions
 

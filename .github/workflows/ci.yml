@@ -55,15 +55,10 @@ jobs:
           curl -fsSL "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
-      # RN 0.81 pods (yoga headers) break under the image's newest Xcode; pin to the
-      # newest Xcode 16.x on the image (run 6: 'yoga/style/Style.h' file not found).
-      - name: Select Xcode 16 toolchain
-        run: |
-          ls -d /Applications/Xcode*.app
-          XC=$(ls -d /Applications/Xcode_16*.app 2>/dev/null | sort -V | tail -1)
-          if [ -n "$XC" ]; then sudo xcode-select -s "$XC"; fi
-          xcodebuild -version
-
+      # No Xcode pin: runs 6-7 pinned Xcode 16.x chasing the ExpoHead yoga-header
+      # failure, but the real cause was expo-router's `react-native-screens: *` dep
+      # floating past the SDK 54 set (fixed by exact pins + root overrides in the
+      # template). The stock image toolchain builds clean.
       - name: Boot iOS simulator
         run: |
           UDID=$(xcrun simctl list devices available -j | node -e "const d=JSON.parse(require('fs').readFileSync(0));console.log(Object.values(d.devices).flat().find(x=>/iPhone/.test(x.name)).udid)")

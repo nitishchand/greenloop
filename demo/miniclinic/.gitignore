@@ -4,3 +4,6 @@ node_modules/
 .expo/
 dist/
 *.log
+# Continuous native generation: expo run:ios/android regenerates these
+apps/mobile/ios/
+apps/mobile/android/
