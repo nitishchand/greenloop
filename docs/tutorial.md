@@ -59,5 +59,38 @@ the task is red — that's the Stop hook.
 ## 6. Overnight variant
 
 `/greenloop:overnight s02-...` queues well-specified tasks and launches
-`timeout 30m greenloop-loop <task> 20` laps (macOS: `gtimeout` from `brew install coreutils`). In the morning, the wake-up ritual: review the full
+`greenloop-loop <task> 20` laps (each verifier step has its own timeout, so a hung
+simulator can't eat the night). In the morning, the wake-up ritual: review the full
 diff, re-run `greenloop-verify` yourself. Only a fresh exit 0 counts.
+
+## 7. The receipts — CI runs this exact tutorial
+
+Every dispatch of the `ci` workflow dogfoods steps 4–6 on a stock `macos-15` GitHub
+runner: scaffold-parity check, backend + Metro up, `expo run:ios` build onto the
+simulator, then `greenloop-loop s01-patient-list 10` headlessly. From the first green
+run (2026-07-11, run 9):
+
+- The loop went green **unattended in 27 minutes**. One lap failed e2e mid-loop —
+  the agent pulled the Maestro failure screenshot, dumped the view hierarchy
+  (`hierarchy_dump.json`, straight from the profile's `toolbelt.md`), fixed, and
+  re-verified — exactly the red → evidence → fix rhythm from step 5.
+- The wake-up fresh verify then confirmed in ~90 seconds, all layers green:
+
+```
+Launch app "com.example.miniclinic" with clear state... COMPLETED
+Assert that id: patient-list-screen is visible... COMPLETED
+Retry 3 times...
+  Tap on id: patient-add-button... COMPLETED
+  Assert that id: add-patient-screen is visible... COMPLETED
+Tap on id: patient-name-input... COMPLETED
+Input text Asha Rao... COMPLETED
+Tap on id: patient-save-button... COMPLETED
+Assert that id: patient-list-screen is visible... COMPLETED
+Assert that "Asha Rao" is visible... COMPLETED
+```
+
+- `passes: true` in `progress.json` was written by `greenloop-verify` itself — the
+  sole writer rule from step 5, honoured end to end.
+
+Each run uploads a `dogfood-evidence` artifact (verifier logs, Maestro debug output,
+lap diff) so you can audit any run the way the wake-up ritual audits an overnight.

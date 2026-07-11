@@ -55,33 +55,45 @@ unclaimed as of 2026-07-09.
   expo https://mcp.expo.dev/mcp` + `expo-mcp` dev dep + `EXPO_UNSTABLE_MCP_SERVER=1`);
   Fetch MCP dropped (built-in WebFetch). 95 tests green.
 
-## v1 status — feature-complete, pre-release
+## v1 status — DOGFOOD GREEN (2026-07-11, run 9); npm publish is the only step left
 
-All four plans merged. Remaining steps are human/external:
+All four plans merged. **CI dogfood run 9 (id 29152550192) went fully green on a stock
+macos-15 runner**: scaffold parity, backend + Metro, `expo run:ios` build + simulator
+install, `greenloop-loop s01-patient-list 10` headless (green unattended in 27 min,
+including one mid-loop red e2e lap the agent debugged via Maestro screenshot +
+hierarchy dump), and the wake-up fresh `greenloop-verify` green in ~90 s with
+`passes: true` written by the verifier. `docs/tutorial.md` §7 carries the receipts
+(spec §12 satisfied). Evidence artifacts (`dogfood-evidence`) now include the verifier
+logs (copied under a visible name — upload-artifact v4 drops hidden dirs) and
+`~/.maestro/tests` debug output.
 
-1. Create the GitHub repo (`nitishchand/greenloop`) and push — unlocks the CI unit
-   gate and makes the marketplace installable by URL.
-2. `npm publish` — makes `npx greenloop@latest` real.
-3. Dogfood: 7 CI runs on 2026-07-08/09 (runs of `gh workflow run ci`). PROVEN on a stock
-   macos-15 runner: Maestro install, simulator boot, Expo SDK 54 install (lockfile committed),
-   typecheck+jest layers green, claude -p headless under CLAUDE_CODE_OAUTH_TOKEN (smoke-gated),
-   greenloop CLIs on PATH, verifier step timeouts (no more hangs).
-   **ExpoHead blocker SOLVED 2026-07-11 (locally; run 8 = CI confirmation):** the
-   `'yoga/style/Style.h' file not found` failure was never an Xcode problem — expo-router
-   declares `react-native-screens: "*"` (and safe-area as `*`), so npm floated screens to
-   4.25+/4.26, whose header layout breaks ExpoHead's yoga includes AND whose renamed
-   `RNSBottomTabs*` → `RNSTabs*` classes break `LinkPreviewNativeNavigation.mm` (second error
-   hidden behind the first). React/react-dom/react-native had drifted the same way (19.2.7 /
-   0.81.6 vs the SDK 54 set 19.1.0 / 0.81.5), giving duplicate react copies in the workspace.
-   Fix (templates + demo, no-drift kept): pin the exact SDK 54 native set in
-   apps/mobile/package.json (react 19.1.0, react-dom 19.1.0, react-native 0.81.5,
-   react-native-screens ~4.16.0, react-native-safe-area-context ~5.6.0) and mirror it in the
-   workspace-root `overrides` so npm can never split them. Verified locally on Xcode 26.6:
-   ExpoHead pod compiles clean, full `expo run:ios` Build Succeeded + installed on the
-   simulator (the exit-1 after install was sandbox osascript, not the build). CI Xcode 16 pin
-   removed (was chasing the wrong cause). Prebuild's package.json edits (android/ios scripts)
-   folded into the template; generated `apps/mobile/ios|android` now gitignored.
-   Evidence artifacts (`dogfood-evidence`) are uploaded on every run.
+Remaining:
+
+1. `npm publish` — makes `npx greenloop@latest` real. Blocked on interactive
+   `npm login` (name `greenloop` verified unclaimed 2026-07-09; tarball verified via
+   `npm pack --dry-run`).
+
+History of the two dogfood blockers (runs 1–8, all fixed):
+
+- Runs 1–7 hardened everything up to the pod build (headless trust, CLIs on PATH,
+  verifier step timeouts, lockfile, smoke gate) but `expo run:ios` failed compiling
+  expo-router's ExpoHead pod: `'yoga/style/Style.h' file not found`.
+- **Root cause (found 2026-07-11 by local repro):** never an Xcode problem —
+  expo-router declares `react-native-screens`/`safe-area-context` as `"*"`, so npm
+  floated screens to 4.25+/4.26, whose header layout breaks ExpoHead's yoga includes
+  AND whose renamed `RNSBottomTabs*` → `RNSTabs*` classes break
+  `LinkPreviewNativeNavigation.mm` (second error hidden behind the first).
+  react/react-dom/react-native drifted the same way (19.2.7/0.81.6 vs the SDK 54 set),
+  duplicating react across the workspace. Fix (templates + demo, no-drift kept): pin
+  the exact SDK 54 native set in apps/mobile/package.json (react 19.1.0, react-dom
+  19.1.0, react-native 0.81.5, react-native-screens ~4.16.0,
+  react-native-safe-area-context ~5.6.0) and mirror it in workspace-root `overrides`.
+  Verified locally on Xcode 26.6 before CI. CI Xcode 16 pin removed (wrong hypothesis).
+  Prebuild's package.json script injections folded into the template; generated
+  `apps/mobile/ios|android` gitignored.
+- Run 8: everything green through the loop, but the wake-up verify flaked at
+  tap-add → add-patient-screen (tap swallowed right after a fresh clearState launch).
+  Fixed by wrapping tap+wait in a Maestro `retry` block in the s01 flow. Run 9 green.
 
 ## Conventions
 
