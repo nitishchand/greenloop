@@ -11,12 +11,18 @@ appId: com.example.miniclinic
     visible:
       id: "patient-list-screen"
     timeout: 10000
-- tapOn:
-    id: "patient-add-button"
-- extendedWaitUntil:
-    visible:
-      id: "add-patient-screen"
-    timeout: 5000
+# A tap right after a fresh launch can be swallowed while the app is still settling
+# (dev-build toasts/transitions) — run 8's wake-up verify failed exactly here after the
+# same flow went green in the loop. Retry re-taps instead of failing the lap.
+- retry:
+    maxRetries: 3
+    commands:
+      - tapOn:
+          id: "patient-add-button"
+      - extendedWaitUntil:
+          visible:
+            id: "add-patient-screen"
+          timeout: 5000
 - tapOn:
     id: "patient-name-input"
 - inputText: "Asha Rao"

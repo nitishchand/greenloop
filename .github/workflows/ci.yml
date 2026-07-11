@@ -130,12 +130,17 @@ jobs:
         working-directory: demo/miniclinic
         run: node ../../bin/greenloop-verify.js s01-patient-list
 
-      - name: Collect evidence (verifier logs, task state, lap diff)
+      - name: Collect evidence (verifier logs, task state, lap diff, maestro debug)
         if: always()
         working-directory: demo/miniclinic
         run: |
           mkdir -p /tmp/evidence
-          cp -R .greenloop /tmp/evidence/ 2>/dev/null || true
+          # upload-artifact v4 drops hidden paths by default — copy .greenloop under a
+          # visible name (run 8's artifact was missing the verifier logs because of this).
+          cp -R .greenloop /tmp/evidence/greenloop-results 2>/dev/null || true
+          # Maestro writes per-run screenshots + view hierarchy here; it's the only way
+          # to see WHY an e2e assertion failed on the runner.
+          cp -R "$HOME/.maestro/tests" /tmp/evidence/maestro-debug 2>/dev/null || true
           cp progress.json /tmp/evidence/ 2>/dev/null || true
           git diff > /tmp/evidence/lap-changes.diff || true
           git status --short > /tmp/evidence/git-status.txt || true
