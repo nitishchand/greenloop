@@ -55,7 +55,14 @@ unclaimed as of 2026-07-09.
   expo https://mcp.expo.dev/mcp` + `expo-mcp` dev dep + `EXPO_UNSTABLE_MCP_SERVER=1`);
   Fetch MCP dropped (built-in WebFetch). 95 tests green.
 
-## v1 status — DOGFOOD GREEN (2026-07-11, run 9); npm publish is the only step left
+## v1 status — RELEASED
+
+**`greenloop@0.1.0` published to npm 2026-07-12** (74 files, shasum a4ef1df…, maintainer
+nitishchand). Verified post-publish: `npx -y greenloop@0.1.0 --check` from a cold empty
+directory pulls from the registry and passes all five preflights (exit 0). Install:
+`npx greenloop` · plugin: `claude plugin install greenloop@greenloop`.
+
+## Dogfood record (spec §12 — complete)
 
 All four plans merged. **CI dogfood run 9 (id 29152550192) went fully green on a stock
 macos-15 runner**: scaffold parity, backend + Metro, `expo run:ios` build + simulator
@@ -66,12 +73,6 @@ hierarchy dump), and the wake-up fresh `greenloop-verify` green in ~90 s with
 (spec §12 satisfied). Evidence artifacts (`dogfood-evidence`) now include the verifier
 logs (copied under a visible name — upload-artifact v4 drops hidden dirs) and
 `~/.maestro/tests` debug output.
-
-Remaining:
-
-1. `npm publish` — makes `npx greenloop@latest` real. Blocked on interactive
-   `npm login` (name `greenloop` verified unclaimed 2026-07-09; tarball verified via
-   `npm pack --dry-run`).
 
 History of the two dogfood blockers (runs 1–8, all fixed):
 
