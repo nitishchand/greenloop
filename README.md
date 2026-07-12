@@ -1,3 +1,8 @@
+
+<img width="2000" height="2000" alt="BUILD (1)" src="https://github.com/user-attachments/assets/5bd10771-941b-4e0c-889c-d3764a5ca08e" />
+
+
+
 # GreenLoop
 
 A **spec-to-verified-app system** for Claude Code: an npx installer + plugin that takes you from
