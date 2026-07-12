@@ -1,6 +1,4 @@
-
-<img width="2000" height="2000" alt="BUILD (1)" src="https://github.com/user-attachments/assets/5bd10771-941b-4e0c-889c-d3764a5ca08e" />
-
+![Uploading BUILD (1) (1).png…]()
 
 
 # GreenLoop
